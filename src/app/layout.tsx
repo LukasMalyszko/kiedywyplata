@@ -7,6 +7,8 @@ import "./globals.scss";
 const inter = Inter({
   variable: "--font-inter",
   subsets: ["latin"],
+  display: 'swap', // Improve font loading performance
+  preload: true,
 });
 
 export const metadata: Metadata = {
@@ -20,6 +22,15 @@ export const metadata: Metadata = {
     type: "website",
     locale: "pl_PL",
   },
+  other: {
+    'format-detection': 'telephone=no',
+  }
+};
+
+export const viewport = {
+  width: 'device-width',
+  initialScale: 1,
+  themeColor: '#0070f3',
 };
 
 export default function RootLayout({
@@ -30,11 +41,9 @@ export default function RootLayout({
   return (
     <html lang="pl" suppressHydrationWarning>
       <head>
-        <script 
-          async 
-          src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-XXXXXXXXXXXXXXXX"
-          crossOrigin="anonymous"
-        />
+        <link rel="preconnect" href="https://fonts.googleapis.com" />
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
+        <link rel="dns-prefetch" href="https://pagead2.googlesyndication.com" />
       </head>
       <body className={inter.variable} suppressHydrationWarning>
         <ThemeProvider>

@@ -1,9 +1,17 @@
-import PaymentCard from '@/components/payment-card/payment-card';
+import dynamic from 'next/dynamic';
 import NextPaymentBanner from '@/components/next-payment-banner/next-payment-banner';
-import CategoryGrid from '@/components/category-grid/category-grid';
 import { Payment, PAYMENT_CATEGORIES } from '@/types/payment';
 import paymentsData from '../../data/payments.json';
 import './page.scss';
+
+// Lazy load components that appear below the fold
+const PaymentCard = dynamic(() => import('@/components/payment-card/payment-card'), {
+  loading: () => <div style={{height: '200px', background: '#f8f9fa', borderRadius: '8px', animation: 'pulse 1.5s ease-in-out infinite'}} />,
+});
+
+const CategoryGrid = dynamic(() => import('@/components/category-grid/category-grid'), {
+  loading: () => <div style={{height: '300px', background: '#f8f9fa', borderRadius: '8px', animation: 'pulse 1.5s ease-in-out infinite'}} />,
+});
 
 export default function Home() {
   const payments: Payment[] = paymentsData as Payment[];
