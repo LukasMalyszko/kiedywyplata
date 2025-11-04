@@ -10,7 +10,7 @@
   },
   {
     "id": "emerytura",
-    "name": "Emerytura ZUS",
+    "name": "Emerytura ZUS i KRUS",
     "next_payment": "2025-11-10",
     "schedule": "10, 15, 20, 25 każdego miesiąca",
     "description": "Wypłaty emerytur ZUS następują w kilku terminach zależnych od daty świadczenia.",
@@ -20,11 +20,22 @@
   {
     "id": "13-emerytura",
     "name": "13. emerytura",
-    "next_payment": "2025-11-30",
-    "schedule": "do końca listopada każdego roku",
-    "description": "Trzynasta emerytura wypłacana jest raz w roku, zwykle w listopadzie lub grudniu.",
+    "next_payment": "2025-04-30",
+    "schedule": "do końca kwietnia każdego roku",
+    "description": "Trzynasta emerytura wypłacana jest raz w roku, zwykle w kwietniu.",
     "source": "https://www.zus.pl/",
-    "category": "pension"
+    "category": "pension",
+    "excludeFromNext": true
+  },
+  {
+    "id": "14-emerytura",
+    "name": "14. emerytura",
+    "next_payment": "2025-09-30",
+    "schedule": "do końca września każdego roku",
+    "description": "Czternasta emerytura wypłacana jest raz w roku, zwykle we wrześniu.",
+    "source": "https://www.zus.pl/",
+    "category": "pension",
+    "excludeFromNext": true
   },
   {
     "id": "zasilek-chorobowy",
@@ -60,15 +71,17 @@
     "schedule": "do 31 sierpnia każdego roku",
     "description": "Świadczenie Dobry Start wypłacane jest raz w roku przed rozpoczęciem roku szkolnego.",
     "source": "https://www.zus.pl/",
-    "category": "family"
+    "category": "family",
+    "excludeFromNext": true
   },
   {
     "id": "dodatek-weglowy",
     "name": "Dodatek węglowy",
-    "next_payment": "2025-11-30",
+    "next_payment": "2024-11-30",
     "schedule": "do końca listopada 2024",
     "description": "Dodatek węglowy to jednorazowe wsparcie dla gospodarstw domowych.",
     "source": "https://www.gov.pl/",
-    "category": "social"
+    "category": "social",
+    "excludeFromNext": true
   }
 ]

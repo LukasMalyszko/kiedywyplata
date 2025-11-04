@@ -12,7 +12,11 @@ interface PaymentCardProps {
 }
 
 export default function PaymentCard({ payment, showNextPayment = true, linkToDetail = true }: PaymentCardProps) {
-  const effectiveISO = getEffectiveNextPayment(payment);
+  // For excluded payments, use original date without calculation
+  const effectiveISO = payment.excludeFromNext 
+    ? payment.next_payment 
+    : getEffectiveNextPayment(payment);
+    
   const formatDate = (dateString: string) => {
     const date = new Date(dateString);
     return date.toLocaleDateString('pl-PL', {
@@ -32,11 +36,15 @@ export default function PaymentCard({ payment, showNextPayment = true, linkToDet
         <h3 className="payment-card__title">{payment.name}</h3>
         {showNextPayment && (
           <div className="payment-card__date">
-            <span className="payment-card__date-label">Następna wypłata:</span>
+            <span className="payment-card__date-label">
+              {payment.excludeFromNext ? 
+                (payment.id === 'dobry-start' ? 'Wypłata roczna:' : 'Jednorazowa wypłata:') :
+                'Następna wypłata:'}
+            </span>
             <span className="payment-card__date-value">
               {formatDate(effectiveISO)}
             </span>
-            {!isPast && (
+            {!isPast && !payment.excludeFromNext && (
               <span className="payment-card__days-counter">
                 {computedDaysUntil === 0 ? 'Dziś!' : computedDaysUntil === 1 ? 'Jutro' : `za ${computedDaysUntil} dni`}
               </span>

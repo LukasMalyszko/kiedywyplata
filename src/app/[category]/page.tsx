@@ -55,7 +55,9 @@ export default async function CategoryPage({ params }: CategoryPageProps) {
   const getNextPayment = () => {
     const today = new Date();
     const startToday = new Date(today.getFullYear(), today.getMonth(), today.getDate());
-    const withEffective = categoryPayments
+    // Exclude payments marked as excludeFromNext
+    const eligiblePayments = categoryPayments.filter(p => !p.excludeFromNext);
+    const withEffective = eligiblePayments
       .map(p => ({ p, iso: getEffectiveNextPayment(p, today) }))
       .map(({ p, iso }) => ({ p, date: new Date(iso) }))
       .filter(({ date }) => date >= startToday)

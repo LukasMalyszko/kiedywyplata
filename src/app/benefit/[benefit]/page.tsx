@@ -20,7 +20,7 @@ export async function generateStaticParams() {
 }
 
 export async function generateMetadata({ params }: BenefitPageProps) {
-  const { benefit } = await params;
+  const { benefit } = params;
   const payments: Payment[] = paymentsData as Payment[];
   const payment = payments.find(p => p.id === benefit);
   
@@ -29,8 +29,12 @@ export async function generateMetadata({ params }: BenefitPageProps) {
       title: 'Świadczenie nie znalezione - Kiedy Wypłata',
     };
   }
-  // Use effective next payment for metadata description  
-  const effective = new Date(getEffectiveNextPayment(payment));
+  
+  // For excluded payments, use original date without calculation
+  const effectiveDate = payment.excludeFromNext 
+    ? payment.next_payment 
+    : getEffectiveNextPayment(payment);
+  const effective = new Date(effectiveDate);
 
   return {
     title: `${payment.name} - Kiedy Wypłata`,
@@ -62,9 +66,17 @@ export default async function BenefitPage({ params }: BenefitPageProps) {
     .filter(p => p.category === payment.category && p.id !== payment.id)
     .slice(0, 3);
 
-  // Calculate effective next payment and days until
+  // Calculate payment date and days until
   const today = new Date();
-  const effectiveISO = getEffectiveNextPayment(payment, today);
+  let effectiveISO: string;
+  
+  // For excluded payments, use original date without calculation
+  if (payment.excludeFromNext) {
+    effectiveISO = payment.next_payment;
+  } else {
+    effectiveISO = getEffectiveNextPayment(payment, today);
+  }
+  
   const paymentDate = new Date(effectiveISO);
   const daysUntil = computeDaysUntil(effectiveISO, today);
   const isUpcoming = daysUntil >= 0 && daysUntil <= 7;
@@ -103,7 +115,9 @@ export default async function BenefitPage({ params }: BenefitPageProps) {
           <div className={`benefit-page__payment-info ${isUpcoming ? 'benefit-page__payment-info--upcoming' : ''} ${isPast ? 'benefit-page__payment-info--past' : ''}`}>
             <div className="benefit-page__payment-date">
               <h2 className="benefit-page__date-label">
-                {isPast ? 'Ostatnia wypłata:' : 'Następna wypłata:'}
+                {payment.excludeFromNext ? 
+                  (payment.id === 'dobry-start' ? 'Wypłata roczna:' : 'Jednorazowa wypłata:') :
+                  (isPast ? 'Ostatnia wypłata:' : 'Następna wypłata:')}
               </h2>
               <div className="benefit-page__date-value">
                 {paymentDate.toLocaleDateString('pl-PL', {
@@ -112,11 +126,18 @@ export default async function BenefitPage({ params }: BenefitPageProps) {
                   year: 'numeric'
                 })}
               </div>
-              {!isPast && (
+              {!isPast && !payment.excludeFromNext && (
                 <div className="benefit-page__countdown">
                   {daysUntil === 0 ? '🎉 Dziś!' : 
                    daysUntil === 1 ? '⏰ Jutro' : 
                    `📅 Za ${daysUntil} ${daysUntil < 5 ? 'dni' : 'dni'}`}
+                </div>
+              )}
+              {payment.excludeFromNext && (
+                <div className="benefit-page__special-note">
+                  {payment.id === 'dobry-start' ? 
+                    '📚 Świadczenie wypłacane raz w roku' : 
+                    '⚡ Świadczenie jednorazowe'}
                 </div>
               )}
             </div>

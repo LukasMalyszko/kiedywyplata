@@ -1,7 +1,7 @@
 'use client';
 
 import { Payment } from '@/types/payment';
-import { getEffectiveNextPayment, daysUntil } from '@/lib/payments';
+import { getEffectiveNextPayment, daysUntil, getEligiblePayments } from '@/lib/payments';
 import './next-payment-banner.scss';
 
 interface NextPaymentBannerProps {
@@ -11,7 +11,9 @@ interface NextPaymentBannerProps {
 export default function NextPaymentBanner({ payments }: NextPaymentBannerProps) {
   const getNextPayment = () => {
     const today = new Date();
-    const withEffective = payments.map(p => ({ p, iso: getEffectiveNextPayment(p, today) }));
+    // Get payments eligible for next payment calculation
+    const eligiblePayments = getEligiblePayments(payments);
+    const withEffective = eligiblePayments.map(p => ({ p, iso: getEffectiveNextPayment(p, today) }));
     const startToday = new Date(today.getFullYear(), today.getMonth(), today.getDate());
     const upcoming = withEffective
       .map(({ p, iso }) => ({ p, date: new Date(iso) }))

@@ -127,3 +127,7 @@ export function daysUntil(dateISO: string, refDate = new Date()): number {
   const diff = startOfDay(d).getTime() - startOfDay(refDate).getTime();
   return Math.ceil(diff / (1000 * 60 * 60 * 24));
 }
+
+export function getEligiblePayments(payments: Payment[]): Payment[] {
+  return payments.filter(p => !p.excludeFromNext);
+}

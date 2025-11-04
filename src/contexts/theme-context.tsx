@@ -17,21 +17,33 @@ interface ThemeProviderProps {
 }
 
 export function ThemeProvider({ children }: ThemeProviderProps) {
-  const [theme, setThemeState] = useState<Theme>(() => {
-    if (typeof window !== 'undefined') {
+  const [theme, setThemeState] = useState<Theme>('light');
+  const [mounted, setMounted] = useState(false);
+
+  // This effect only runs on mount (client-side) to avoid hydration mismatch
+  useEffect(() => {
+    // eslint-disable-next-line react-hooks/set-state-in-effect
+    setMounted(true);
+  }, []);
+
+  // Load saved theme after component mounts (client-side only)
+  useEffect(() => {
+    if (mounted) {
       const savedTheme = localStorage.getItem('kiedywyplata-theme') as Theme;
       if (savedTheme && (savedTheme === 'light' || savedTheme === 'dark')) {
-        return savedTheme;
+        // eslint-disable-next-line react-hooks/set-state-in-effect
+        setThemeState(savedTheme);
       }
     }
-    return 'light';
-  });
+  }, [mounted]);
 
   // Apply theme to document and localStorage
   useEffect(() => {
-    document.documentElement.setAttribute('data-theme', theme);
-    localStorage.setItem('kiedywyplata-theme', theme);
-  }, [theme]);
+    if (mounted) {
+      document.documentElement.setAttribute('data-theme', theme);
+      localStorage.setItem('kiedywyplata-theme', theme);
+    }
+  }, [theme, mounted]);
 
   const toggleTheme = () => {
     setThemeState(prev => prev === 'light' ? 'dark' : 'light');

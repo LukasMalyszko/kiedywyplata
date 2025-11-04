@@ -6,6 +6,7 @@ export interface Payment {
   description: string;
   source: string;
   category: 'family' | 'pension' | 'benefits' | 'social';
+  excludeFromNext?: boolean; // Optional flag to exclude from next payment calculations
 }
 
 export interface PaymentCategory {
