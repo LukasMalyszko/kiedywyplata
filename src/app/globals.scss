@@ -179,6 +179,7 @@ a {
     &:hover {
       background-color: var(--color-primary-hover);
       transform: translateY(-1px);
+      color: white;
     }
     
     &:focus {

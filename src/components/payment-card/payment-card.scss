@@ -120,7 +120,7 @@
     text-decoration: none;
     transition: color 0.2s ease;
     cursor: pointer;
-    padding: 0;
+    padding: 10px 0;
     font-family: inherit;
     
     &:hover {
@@ -140,6 +140,7 @@
   color: inherit;
   display: flex;
   height: 100%;
+  padding: 10px 0;
   
   &:hover {
     text-decoration: none;
