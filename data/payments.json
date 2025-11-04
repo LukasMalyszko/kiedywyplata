@@ -1,0 +1,74 @@
+[
+  {
+    "id": "800plus",
+    "name": "Świadczenie 800+",
+    "next_payment": "2025-11-25",
+    "schedule": "do 25. dnia każdego miesiąca",
+    "description": "Wypłaty 800+ realizowane są przez ZUS do 25 dnia każdego miesiąca na wskazany rachunek bankowy.",
+    "source": "https://www.zus.pl/",
+    "category": "family"
+  },
+  {
+    "id": "emerytura",
+    "name": "Emerytura ZUS",
+    "next_payment": "2025-11-10",
+    "schedule": "10, 15, 20, 25 każdego miesiąca",
+    "description": "Wypłaty emerytur ZUS następują w kilku terminach zależnych od daty świadczenia.",
+    "source": "https://www.zus.pl/",
+    "category": "pension"
+  },
+  {
+    "id": "13-emerytura",
+    "name": "13. emerytura",
+    "next_payment": "2025-11-30",
+    "schedule": "do końca listopada każdego roku",
+    "description": "Trzynasta emerytura wypłacana jest raz w roku, zwykle w listopadzie lub grudniu.",
+    "source": "https://www.zus.pl/",
+    "category": "pension"
+  },
+  {
+    "id": "zasilek-chorobowy",
+    "name": "Zasiłek chorobowy",
+    "next_payment": "2025-11-15",
+    "schedule": "w terminach wypłat wynagrodzeń",
+    "description": "Zasiłek chorobowy wypłacany jest przez pracodawcę lub ZUS w zależności od sytuacji.",
+    "source": "https://www.zus.pl/",
+    "category": "benefits"
+  },
+  {
+    "id": "zasilek-rodzinny",
+    "name": "Zasiłek rodzinny",
+    "next_payment": "2025-11-20",
+    "schedule": "do 20. dnia każdego miesiąca",
+    "description": "Zasiłek rodzinny wypłacany jest przez gminy do 20. dnia każdego miesiąca.",
+    "source": "https://www.gov.pl/",
+    "category": "family"
+  },
+  {
+    "id": "zasilek-macierzynski",
+    "name": "Zasiłek macierzyński",
+    "next_payment": "2025-11-15",
+    "schedule": "w terminach wypłat wynagrodzeń",
+    "description": "Zasiłek macierzyński wypłacany jest przez ZUS lub pracodawcę.",
+    "source": "https://www.zus.pl/",
+    "category": "benefits"
+  },
+  {
+    "id": "dobry-start",
+    "name": "Dobry Start (300+)",
+    "next_payment": "2025-08-31",
+    "schedule": "do 31 sierpnia każdego roku",
+    "description": "Świadczenie Dobry Start wypłacane jest raz w roku przed rozpoczęciem roku szkolnego.",
+    "source": "https://www.zus.pl/",
+    "category": "family"
+  },
+  {
+    "id": "dodatek-weglowy",
+    "name": "Dodatek węglowy",
+    "next_payment": "2025-11-30",
+    "schedule": "do końca listopada 2024",
+    "description": "Dodatek węglowy to jednorazowe wsparcie dla gospodarstw domowych.",
+    "source": "https://www.gov.pl/",
+    "category": "social"
+  }
+]

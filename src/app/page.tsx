@@ -1,66 +1,54 @@
-import Image from "next/image";
-import styles from "./page.module.css";
+import PaymentCard from '@/components/payment-card/payment-card';
+import NextPaymentBanner from '@/components/next-payment-banner/next-payment-banner';
+import CategoryGrid from '@/components/category-grid/category-grid';
+import { Payment, PAYMENT_CATEGORIES } from '@/types/payment';
+import paymentsData from '../../data/payments.json';
+import './page.scss';
 
 export default function Home() {
+  const payments: Payment[] = paymentsData as Payment[];
+
   return (
-    <div className={styles.page}>
-      <main className={styles.main}>
-        <Image
-          className={styles.logo}
-          src="/next.svg"
-          alt="Next.js logo"
-          width={100}
-          height={20}
-          priority
-        />
-        <div className={styles.intro}>
-          <h1>To get started, edit the page.tsx file.</h1>
-          <p>
-            Looking for a starting point or more instructions? Head over to{" "}
-            <a
-              href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              Templates
-            </a>{" "}
-            or the{" "}
-            <a
-              href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              Learning
-            </a>{" "}
-            center.
+    <div className="home-page">
+      <NextPaymentBanner payments={payments} />
+      
+      <div className="container">
+        <header className="home-page__header">
+          <h1 className="home-page__title">
+            Kiedy Wypłata?
+          </h1>
+          <p className="home-page__description">
+            Sprawdź terminy wypłat świadczeń społecznych w Polsce. 
+            Aktualne informacje o wypłatach 800+, emerytur ZUS, zasiłków i innych świadczeń.
           </p>
-        </div>
-        <div className={styles.ctas}>
-          <a
-            className={styles.primary}
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className={styles.logo}
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={16}
-              height={16}
-            />
-            Deploy Now
-          </a>
-          <a
-            className={styles.secondary}
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Documentation
-          </a>
-        </div>
-      </main>
+        </header>
+
+        <section className="home-page__categories">
+          <h2 className="home-page__section-title">Wybierz kategorię</h2>
+          <CategoryGrid categories={PAYMENT_CATEGORIES} />
+        </section>
+
+        <section className="home-page__all-payments">
+          <h2 className="home-page__section-title">Wszystkie świadczenia</h2>
+          <div className="home-page__payments-grid">
+            {payments.map((payment) => (
+              <PaymentCard key={payment.id} payment={payment} />
+            ))}
+          </div>
+        </section>
+
+        <section className="home-page__info">
+          <div className="info-box">
+            <h3 className="info-box__title">ℹ️ Ważne informacje</h3>
+            <ul className="info-box__list">
+              <li>Terminy wypłat mogą się różnić w zależności od banku</li>
+              <li>W dni wolne od pracy wypłaty mogą być realizowane wcześniej</li>
+              <li>Zawsze sprawdzaj aktualne informacje na stronach urzędowych</li>
+              <li>Dane aktualizowane na bieżąco na podstawie oficjalnych źródeł</li>
+            </ul>
+          </div>
+        </section>
+      </div>
     </div>
   );
 }

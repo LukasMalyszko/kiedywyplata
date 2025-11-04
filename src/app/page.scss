@@ -1,0 +1,107 @@
+.home-page {
+  min-height: 100vh;
+  
+  &__header {
+    text-align: center;
+    margin-bottom: var(--spacing-xxl);
+    padding-top: var(--spacing-xl);
+  }
+  
+  &__title {
+    font-size: var(--font-size-xxl);
+    font-weight: 700;
+    color: var(--color-text);
+    margin-bottom: var(--spacing-md);
+    
+    @media (min-width: 768px) {
+      font-size: 3rem;
+    }
+  }
+  
+  &__description {
+    font-size: var(--font-size-large);
+    color: var(--color-text-light);
+    max-width: 600px;
+    margin: 0 auto;
+    line-height: 1.6;
+  }
+  
+  &__section-title {
+    font-size: var(--font-size-xl);
+    font-weight: 600;
+    color: var(--color-text);
+    margin-bottom: var(--spacing-lg);
+    text-align: center;
+    
+    @media (min-width: 768px) {
+      text-align: left;
+    }
+  }
+  
+  &__categories {
+    margin-bottom: var(--spacing-xxl);
+  }
+  
+  &__all-payments {
+    margin-bottom: var(--spacing-xxl);
+  }
+  
+  &__payments-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+    gap: var(--spacing-lg);
+    
+    @media (max-width: 768px) {
+      grid-template-columns: 1fr;
+      gap: var(--spacing-md);
+    }
+  }
+  
+  &__info {
+    margin-bottom: var(--spacing-xl);
+  }
+}
+
+.info-box {
+  background: var(--color-background-light);
+  border: 1px solid var(--color-border);
+  border-radius: var(--border-radius-lg);
+  padding: var(--spacing-lg);
+  margin-top: var(--spacing-xl);
+  
+  &__title {
+    font-size: var(--font-size-large);
+    font-weight: 600;
+    color: var(--color-text);
+    margin-bottom: var(--spacing-md);
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-sm);
+  }
+  
+  &__list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    
+    li {
+      position: relative;
+      padding-left: var(--spacing-lg);
+      margin-bottom: var(--spacing-sm);
+      color: var(--color-text-light);
+      line-height: 1.5;
+      
+      &::before {
+        content: '•';
+        position: absolute;
+        left: 0;
+        color: var(--color-primary);
+        font-weight: bold;
+      }
+      
+      &:last-child {
+        margin-bottom: 0;
+      }
+    }
+  }
+}

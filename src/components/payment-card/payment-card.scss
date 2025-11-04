@@ -1,0 +1,118 @@
+.payment-card {
+  background: var(--color-background);
+  border: 1px solid var(--color-border);
+  border-radius: var(--border-radius-lg);
+  padding: var(--spacing-lg);
+  box-shadow: var(--shadow-sm);
+  transition: all 0.3s ease;
+  
+  &:hover {
+    box-shadow: var(--shadow-md);
+    transform: translateY(-2px);
+  }
+  
+  &--upcoming {
+    border-color: var(--color-success);
+    background: linear-gradient(135deg, var(--color-background) 0%, rgba(40, 167, 69, 0.02) 100%);
+    
+    .payment-card__date-value {
+      color: var(--color-success);
+      font-weight: 600;
+    }
+  }
+  
+  &--past {
+    opacity: 0.7;
+    
+    .payment-card__date-value {
+      color: var(--color-text-light);
+      text-decoration: line-through;
+    }
+  }
+  
+  &__header {
+    margin-bottom: var(--spacing-md);
+  }
+  
+  &__title {
+    font-size: var(--font-size-large);
+    font-weight: 600;
+    color: var(--color-text);
+    margin-bottom: var(--spacing-sm);
+  }
+  
+  &__date {
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-xs);
+    
+    @media (min-width: 768px) {
+      flex-direction: row;
+      align-items: center;
+      gap: var(--spacing-sm);
+    }
+  }
+  
+  &__date-label {
+    font-size: var(--font-size-small);
+    color: var(--color-text-light);
+    font-weight: 500;
+  }
+  
+  &__date-value {
+    font-size: var(--font-size-base);
+    font-weight: 600;
+    color: var(--color-primary);
+  }
+  
+  &__days-counter {
+    font-size: var(--font-size-small);
+    background: var(--color-background-light);
+    padding: var(--spacing-xs) var(--spacing-sm);
+    border-radius: var(--border-radius-sm);
+    border: 1px solid var(--color-border);
+    color: var(--color-text-light);
+    font-weight: 500;
+  }
+  
+  &__content {
+    margin-bottom: var(--spacing-lg);
+  }
+  
+  &__description {
+    color: var(--color-text);
+    line-height: 1.6;
+    margin-bottom: var(--spacing-md);
+  }
+  
+  &__schedule {
+    font-size: var(--font-size-small);
+    color: var(--color-text-light);
+    background: var(--color-background-light);
+    padding: var(--spacing-sm);
+    border-radius: var(--border-radius);
+    border-left: 3px solid var(--color-primary);
+    
+    strong {
+      color: var(--color-text);
+    }
+  }
+  
+  &__footer {
+    padding-top: var(--spacing-md);
+    border-top: 1px solid var(--color-border);
+  }
+  
+  &__source-link {
+    color: var(--color-primary);
+    font-size: var(--font-size-small);
+    font-weight: 500;
+    text-decoration: none;
+    transition: color 0.2s ease;
+    
+    &:hover {
+      color: var(--color-primary-dark);
+      text-decoration: underline;
+    }
+  }
+}

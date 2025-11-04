@@ -1,36 +1,102 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Kiedy Wypłata 🇵🇱
 
-## Getting Started
+Aplikacja webowa do sprawdzania terminów wypłat świadczeń społecznych w Polsce.
 
-First, run the development server:
+## 🎯 Funkcje
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+- **Terminy wypłat**: Aktualne daty wypłat 800+, emerytur ZUS, zasiłków i innych świadczeń
+- **Kategoryzacja**: Podział na kategorie (rodzinne, emerytury, zasiłki, socjalne)
+- **Responsywność**: Pełne wsparcie dla urządzeń mobilnych
+- **SEO**: Zoptymalizowane meta tagi i struktura dla wyszukiwarek
+- **AdSense**: Gotowa integracja z Google AdSense
+- **Statyczne generowanie**: Szybkie ładowanie dzięki SSG w Next.js
+
+
+## 📁 Struktura projektu
+
+```
+├── data/
+│   └── payments.json          # Dane o wypłatach
+├── src/
+│   ├── app/
+│   │   ├── globals.scss       # Globalne style SCSS
+│   │   ├── layout.tsx         # Layout aplikacji
+│   │   ├── page.tsx           # Strona główna
+│   │   └── kategoria/[category]/
+│   │       └── page.tsx       # Strony kategorii
+│   ├── components/
+│   │   ├── payment-card/      # Karta wypłaty (BEM)
+│   │   ├── next-payment-banner/ # Banner najbliższej wypłaty
+│   │   ├── category-grid/     # Siatka kategorii
+│   │   └── adsense/          # Komponenty AdSense
+│   └── types/
+│       └── payment.ts         # Typy TypeScript
+└── public/
+    └── adsense.html          # Przykład integracji AdSense
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## 🚀 Uruchomienie
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+### Wymagania
+- Node.js 18+ 
+- npm/yarn/pnpm
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+### Instalacja
 
-## Learn More
+```bash
+# Zainstaluj zależności
+npm install
 
-To learn more about Next.js, take a look at the following resources:
+# Uruchom serwer deweloperski
+npm run dev
+```
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+Aplikacja będzie dostępna pod adresem: http://localhost:3000
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+### Budowanie produkcyjne
 
-## Deploy on Vercel
+```bash
+# Zbuduj aplikację
+npm run build
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+# Uruchom wersję produkcyjną
+npm start
+```
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+## 🎨 Stylowanie z BEM
+
+Projekt używa metodologii BEM dla CSS:
+
+```scss
+// Blok
+.payment-card { }
+
+// Element
+.payment-card__title { }
+.payment-card__description { }
+
+// Modyfikator
+.payment-card--upcoming { }
+.payment-card--past { }
+```
+
+
+## 🚀 Wdrożenie
+
+### Vercel (Zalecane)
+
+```bash
+# Zainstaluj Vercel CLI
+npm i -g vercel
+
+# Wdróż aplikację
+vercel
+```
+
+## 📄 Licencja
+
+MIT License - możesz swobodnie wykorzystywać w projektach komercyjnych.
+
+---
+
+**Kiedy Wypłata** - Zawsze na bieżąco z terminami wypłat w Polsce! 🇵🇱
