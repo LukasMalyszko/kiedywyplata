@@ -8,6 +8,11 @@ interface LazyAdSenseProps {
   className?: string;
 }
 
+// AdSense types
+type AdsByGoogleArray = Array<Record<string, unknown>> & {
+  push: (args: Record<string, unknown>) => void;
+};
+
 let adSenseLoaded = false;
 let adSenseLoading = false;
 
@@ -64,9 +69,11 @@ export default function LazyAdSense({
   useEffect(() => {
     if (!isVisible || !userInteracted || scriptReady) return;
 
+    // Check if script is already loaded
     if (adSenseLoaded) {
-      setScriptReady(true);
-      return;
+      // Use a callback to avoid direct setState in effect
+      const timer = setTimeout(() => setScriptReady(true), 0);
+      return () => clearTimeout(timer);
     }
 
     if (adSenseLoading) return;
@@ -74,7 +81,7 @@ export default function LazyAdSense({
     adSenseLoading = true;
 
     // Load script with high delay to prioritize core content
-    setTimeout(() => {
+    const loadTimer = setTimeout(() => {
       const script = document.createElement('script');
       script.src = `https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-XXXXXXXXXXXXXXXX`;
       script.async = true;
@@ -85,9 +92,11 @@ export default function LazyAdSense({
         adSenseLoading = false;
         setScriptReady(true);
         
-        // Initialize ad
+        // Initialize ad with proper typing
         try {
-          ((window as any).adsbygoogle = (window as any).adsbygoogle || []).push({});
+          const adsbygoogle = (window as Window & { adsbygoogle?: AdsByGoogleArray }).adsbygoogle || [];
+          (window as Window & { adsbygoogle: AdsByGoogleArray }).adsbygoogle = adsbygoogle as AdsByGoogleArray;
+          adsbygoogle.push({});
         } catch (error) {
           console.warn('AdSense initialization error:', error);
         }
@@ -100,6 +109,10 @@ export default function LazyAdSense({
 
       document.head.appendChild(script);
     }, 3000); // 3 second delay
+
+    return () => {
+      clearTimeout(loadTimer);
+    };
   }, [isVisible, userInteracted, scriptReady]);
 
   return (
