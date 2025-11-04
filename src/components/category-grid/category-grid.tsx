@@ -14,7 +14,7 @@ export default function CategoryGrid({ categories }: CategoryGridProps) {
       {categories.map((category) => (
         <Link
           key={category.id}
-          href={`/kategoria/${category.id}`}
+          href={`/${category.id}`}
           className="category-card"
         >
           <div className="category-card__icon">

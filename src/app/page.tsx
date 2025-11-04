@@ -32,7 +32,7 @@ export default function Home() {
           <h2 className="home-page__section-title">Wszystkie świadczenia</h2>
           <div className="home-page__payments-grid">
             {payments.map((payment) => (
-              <PaymentCard key={payment.id} payment={payment} />
+              <PaymentCard key={payment.id} payment={payment} linkToDetail={true} />
             ))}
           </div>
         </section>

@@ -1,14 +1,16 @@
 'use client';
 
+import Link from 'next/link';
 import { Payment } from '@/types/payment';
 import './payment-card.scss';
 
 interface PaymentCardProps {
   payment: Payment;
   showNextPayment?: boolean;
+  linkToDetail?: boolean;
 }
 
-export default function PaymentCard({ payment, showNextPayment = true }: PaymentCardProps) {
+export default function PaymentCard({ payment, showNextPayment = true, linkToDetail = true }: PaymentCardProps) {
   const formatDate = (dateString: string) => {
     const date = new Date(dateString);
     return date.toLocaleDateString('pl-PL', {
@@ -30,7 +32,7 @@ export default function PaymentCard({ payment, showNextPayment = true }: Payment
   const isUpcoming = daysUntil <= 7 && daysUntil >= 0;
   const isPast = daysUntil < 0;
 
-  return (
+  const cardContent = (
     <div className={`payment-card ${isUpcoming ? 'payment-card--upcoming' : ''} ${isPast ? 'payment-card--past' : ''}`}>
       <div className="payment-card__header">
         <h3 className="payment-card__title">{payment.name}</h3>
@@ -57,15 +59,28 @@ export default function PaymentCard({ payment, showNextPayment = true }: Payment
       </div>
 
       <div className="payment-card__footer">
-        <a 
-          href={payment.source} 
-          target="_blank" 
-          rel="noopener noreferrer"
+        <button
+          onClick={(e) => {
+            e.stopPropagation();
+            e.preventDefault();
+            window.open(payment.source, '_blank', 'noopener,noreferrer');
+          }}
           className="payment-card__source-link"
+          type="button"
         >
           Źródło informacji →
-        </a>
+        </button>
       </div>
     </div>
   );
+
+  if (linkToDetail) {
+    return (
+      <Link href={`/benefit/${payment.id}`} className="payment-card-link">
+        {cardContent}
+      </Link>
+    );
+  }
+
+  return cardContent;
 }

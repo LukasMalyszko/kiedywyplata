@@ -1,0 +1,178 @@
+import { notFound } from 'next/navigation';
+import PaymentCard from '@/components/payment-card/payment-card';
+import { Payment, PAYMENT_CATEGORIES } from '@/types/payment';
+import paymentsData from '../../../../data/payments.json';
+import './page.scss';
+
+interface BenefitPageProps {
+  params: {
+    benefit: string;
+  };
+}
+
+export async function generateStaticParams() {
+  const payments: Payment[] = paymentsData as Payment[];
+  return payments.map((payment) => ({
+    benefit: payment.id,
+  }));
+}
+
+export async function generateMetadata({ params }: BenefitPageProps) {
+  const { benefit } = await params;
+  const payments: Payment[] = paymentsData as Payment[];
+  const payment = payments.find(p => p.id === benefit);
+  
+  if (!payment) {
+    return {
+      title: 'Świadczenie nie znalezione - Kiedy Wypłata',
+    };
+  }
+
+  return {
+    title: `${payment.name} - Kiedy Wypłata`,
+    description: `${payment.description} Sprawdź termin wypłaty: ${new Date(payment.next_payment).toLocaleDateString('pl-PL')}`,
+    keywords: `wypłata ${payment.name.toLowerCase()}, ${payment.schedule.toLowerCase()}, terminy wypłat`,
+    openGraph: {
+      title: `${payment.name} - Kiedy Wypłata`,
+      description: payment.description,
+      type: 'website',
+      locale: 'pl_PL',
+    },
+  };
+}
+
+export default async function BenefitPage({ params }: BenefitPageProps) {
+  const { benefit } = await params;
+  const payments: Payment[] = paymentsData as Payment[];
+  const payment = payments.find(p => p.id === benefit);
+  
+  if (!payment) {
+    notFound();
+  }
+
+  // Get category info
+  const categoryData = PAYMENT_CATEGORIES.find(cat => cat.id === payment.category);
+  
+  // Get related payments from the same category
+  const relatedPayments = payments
+    .filter(p => p.category === payment.category && p.id !== payment.id)
+    .slice(0, 3);
+
+  // Calculate days until payment
+  const today = new Date();
+  const paymentDate = new Date(payment.next_payment);
+  const daysUntil = Math.ceil((paymentDate.getTime() - today.getTime()) / (1000 * 60 * 60 * 24));
+  const isUpcoming = daysUntil >= 0 && daysUntil <= 7;
+  const isPast = daysUntil < 0;
+
+  return (
+    <div className="benefit-page">
+      <div className="container">
+        <header className="benefit-page__header">
+          <div className="benefit-page__breadcrumb">
+            <a href="/" className="benefit-page__breadcrumb-link">Strona główna</a>
+            <span className="benefit-page__breadcrumb-separator">→</span>
+            {categoryData && (
+              <>
+                <a href={`/${payment.category}`} className="benefit-page__breadcrumb-link">
+                  {categoryData.name}
+                </a>
+                <span className="benefit-page__breadcrumb-separator">→</span>
+              </>
+            )}
+            <span className="benefit-page__breadcrumb-current">{payment.name}</span>
+          </div>
+          
+          <div className="benefit-page__hero">
+            {categoryData && (
+              <div className="benefit-page__category">
+                <span className="benefit-page__category-icon">{categoryData.icon}</span>
+                <span className="benefit-page__category-name">{categoryData.name}</span>
+              </div>
+            )}
+            
+            <h1 className="benefit-page__title">{payment.name}</h1>
+            <p className="benefit-page__description">{payment.description}</p>
+          </div>
+
+          <div className={`benefit-page__payment-info ${isUpcoming ? 'benefit-page__payment-info--upcoming' : ''} ${isPast ? 'benefit-page__payment-info--past' : ''}`}>
+            <div className="benefit-page__payment-date">
+              <h2 className="benefit-page__date-label">
+                {isPast ? 'Ostatnia wypłata:' : 'Następna wypłata:'}
+              </h2>
+              <div className="benefit-page__date-value">
+                {paymentDate.toLocaleDateString('pl-PL', {
+                  day: '2-digit',
+                  month: 'long',
+                  year: 'numeric'
+                })}
+              </div>
+              {!isPast && (
+                <div className="benefit-page__countdown">
+                  {daysUntil === 0 ? '🎉 Dziś!' : 
+                   daysUntil === 1 ? '⏰ Jutro' : 
+                   `📅 Za ${daysUntil} ${daysUntil < 5 ? 'dni' : 'dni'}`}
+                </div>
+              )}
+            </div>
+            
+            <div className="benefit-page__schedule">
+              <h3 className="benefit-page__schedule-title">Harmonogram wypłat:</h3>
+              <p className="benefit-page__schedule-text">{payment.schedule}</p>
+            </div>
+          </div>
+        </header>
+
+        <section className="benefit-page__details">
+          <div className="benefit-page__info-grid">
+            <div className="benefit-page__info-card">
+              <h3 className="benefit-page__info-title">📋 Szczegóły</h3>
+              <p className="benefit-page__info-text">{payment.description}</p>
+            </div>
+            
+            <div className="benefit-page__info-card">
+              <h3 className="benefit-page__info-title">📅 Harmonogram</h3>
+              <p className="benefit-page__info-text">{payment.schedule}</p>
+            </div>
+            
+            <div className="benefit-page__info-card">
+              <h3 className="benefit-page__info-title">🏛️ Źródło informacji</h3>
+              <a 
+                href={payment.source} 
+                target="_blank" 
+                rel="noopener noreferrer"
+                className="benefit-page__source-link"
+              >
+                Oficjalna strona →
+              </a>
+            </div>
+          </div>
+        </section>
+
+        {relatedPayments.length > 0 && (
+          <section className="benefit-page__related">
+            <h2 className="benefit-page__section-title">Podobne świadczenia</h2>
+            <div className="benefit-page__related-grid">
+              {relatedPayments.map((relatedPayment) => (
+                <PaymentCard key={relatedPayment.id} payment={relatedPayment} linkToDetail={true} />
+              ))}
+            </div>
+          </section>
+        )}
+
+        <section className="benefit-page__actions">
+          <div className="benefit-page__action-buttons">
+            <a href="/" className="button button--secondary">
+              ← Powrót do strony głównej
+            </a>
+            {categoryData && (
+              <a href={`/${payment.category}`} className="button button--primary">
+                Zobacz wszystkie: {categoryData.name}
+              </a>
+            )}
+          </div>
+        </section>
+      </div>
+    </div>
+  );
+}

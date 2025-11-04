@@ -1,0 +1,254 @@
+.benefit-page {
+  min-height: 100vh;
+  padding-top: var(--spacing-xl);
+  
+  &__header {
+    margin-bottom: var(--spacing-xxl);
+  }
+  
+  &__breadcrumb {
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-sm);
+    margin-bottom: var(--spacing-lg);
+    font-size: var(--font-size-small);
+    flex-wrap: wrap;
+  }
+  
+  &__breadcrumb-link {
+    color: var(--color-primary);
+    text-decoration: none;
+    
+    &:hover {
+      text-decoration: underline;
+    }
+  }
+  
+  &__breadcrumb-separator {
+    color: var(--color-text-light);
+  }
+  
+  &__breadcrumb-current {
+    color: var(--color-text-light);
+  }
+  
+  &__hero {
+    text-align: center;
+    margin-bottom: var(--spacing-xl);
+    
+    @media (min-width: 768px) {
+      text-align: left;
+    }
+  }
+  
+  &__category {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--spacing-sm);
+    background: var(--color-background-light);
+    padding: var(--spacing-xs) var(--spacing-sm);
+    border-radius: var(--border-radius);
+    margin-bottom: var(--spacing-md);
+    font-size: var(--font-size-small);
+    color: var(--color-text-light);
+  }
+  
+  &__category-icon {
+    font-size: 1rem;
+  }
+  
+  &__title {
+    font-size: var(--font-size-xxl);
+    font-weight: 700;
+    color: var(--color-text);
+    margin-bottom: var(--spacing-md);
+    
+    @media (min-width: 768px) {
+      font-size: 3rem;
+    }
+  }
+  
+  &__description {
+    font-size: var(--font-size-large);
+    color: var(--color-text-light);
+    line-height: 1.6;
+    max-width: 800px;
+    margin: 0 auto;
+    
+    @media (min-width: 768px) {
+      margin: 0;
+    }
+  }
+  
+  &__payment-info {
+    background: var(--color-background-light);
+    border: 2px solid var(--color-border);
+    border-radius: var(--border-radius-lg);
+    padding: var(--spacing-xl);
+    margin-bottom: var(--spacing-xl);
+    text-align: center;
+    
+    &--upcoming {
+      background: linear-gradient(135deg, rgba(40, 167, 69, 0.05) 0%, rgba(40, 167, 69, 0.1) 100%);
+      border-color: var(--color-success);
+    }
+    
+    &--past {
+      opacity: 0.7;
+    }
+  }
+  
+  &__payment-date {
+    margin-bottom: var(--spacing-lg);
+  }
+  
+  &__date-label {
+    font-size: var(--font-size-base);
+    color: var(--color-text-light);
+    margin-bottom: var(--spacing-sm);
+    font-weight: 500;
+  }
+  
+  &__date-value {
+    font-size: var(--font-size-xl);
+    font-weight: 700;
+    color: var(--color-primary);
+    margin-bottom: var(--spacing-sm);
+    
+    @media (min-width: 768px) {
+      font-size: 2rem;
+    }
+    
+    .benefit-page__payment-info--upcoming & {
+      color: var(--color-success);
+    }
+  }
+  
+  &__countdown {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--spacing-xs);
+    background: var(--color-primary);
+    color: white;
+    padding: var(--spacing-xs) var(--spacing-md);
+    border-radius: var(--border-radius);
+    font-weight: 600;
+    font-size: var(--font-size-small);
+    
+    .benefit-page__payment-info--upcoming & {
+      background: var(--color-success);
+    }
+  }
+  
+  &__schedule {
+    padding-top: var(--spacing-lg);
+    border-top: 1px solid var(--color-border);
+  }
+  
+  &__schedule-title {
+    font-size: var(--font-size-base);
+    color: var(--color-text);
+    margin-bottom: var(--spacing-sm);
+    font-weight: 600;
+  }
+  
+  &__schedule-text {
+    color: var(--color-text-light);
+    margin: 0;
+  }
+  
+  &__details {
+    margin-bottom: var(--spacing-xxl);
+  }
+  
+  &__info-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: var(--spacing-lg);
+    
+    @media (min-width: 768px) {
+      grid-template-columns: repeat(2, 1fr);
+    }
+    
+    @media (min-width: 1024px) {
+      grid-template-columns: repeat(3, 1fr);
+    }
+  }
+  
+  &__info-card {
+    background: var(--color-background);
+    border: 1px solid var(--color-border);
+    border-radius: var(--border-radius-lg);
+    padding: var(--spacing-lg);
+    box-shadow: var(--shadow-sm);
+    transition: box-shadow 0.2s ease;
+    
+    &:hover {
+      box-shadow: var(--shadow-md);
+    }
+  }
+  
+  &__info-title {
+    font-size: var(--font-size-large);
+    font-weight: 600;
+    color: var(--color-text);
+    margin-bottom: var(--spacing-md);
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-sm);
+  }
+  
+  &__info-text {
+    color: var(--color-text-light);
+    line-height: 1.6;
+    margin: 0;
+  }
+  
+  &__source-link {
+    color: var(--color-primary);
+    text-decoration: none;
+    font-weight: 500;
+    
+    &:hover {
+      text-decoration: underline;
+    }
+  }
+  
+  &__section-title {
+    font-size: var(--font-size-xl);
+    font-weight: 600;
+    color: var(--color-text);
+    margin-bottom: var(--spacing-lg);
+    text-align: center;
+    
+    @media (min-width: 768px) {
+      text-align: left;
+    }
+  }
+  
+  &__related {
+    margin-bottom: var(--spacing-xxl);
+  }
+  
+  &__related-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: var(--spacing-lg);
+  }
+  
+  &__actions {
+    padding-top: var(--spacing-xl);
+    border-top: 1px solid var(--color-border);
+  }
+  
+  &__action-buttons {
+    display: flex;
+    gap: var(--spacing-md);
+    justify-content: center;
+    flex-wrap: wrap;
+    
+    @media (min-width: 768px) {
+      justify-content: flex-start;
+    }
+  }
+}

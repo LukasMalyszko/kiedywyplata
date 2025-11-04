@@ -1,7 +1,7 @@
-import { notFound } from 'next/navigation';
+import { notFound, redirect } from 'next/navigation';
 import PaymentCard from '@/components/payment-card/payment-card';
 import { Payment, PAYMENT_CATEGORIES } from '@/types/payment';
-import paymentsData from '../../../../data/payments.json';
+import paymentsData from '../../../data/payments.json';
 import './page.scss';
 
 interface CategoryPageProps {
@@ -17,7 +17,8 @@ export async function generateStaticParams() {
 }
 
 export async function generateMetadata({ params }: CategoryPageProps) {
-  const categoryData = PAYMENT_CATEGORIES.find(cat => cat.id === params.category);
+  const { category } = await params;
+  const categoryData = PAYMENT_CATEGORIES.find(cat => cat.id === category);
   
   if (!categoryData) {
     return {
@@ -28,22 +29,26 @@ export async function generateMetadata({ params }: CategoryPageProps) {
   return {
     title: `${categoryData.name} - Kiedy Wypłata`,
     description: `Sprawdź terminy wypłat dla kategorii: ${categoryData.description}. Aktualne daty wypłat w Polsce.`,
+    keywords: `wypłata ${categoryData.name.toLowerCase()}, ${categoryData.description.toLowerCase()}, terminy wypłat`,
     openGraph: {
       title: `${categoryData.name} - Kiedy Wypłata`,
       description: `Sprawdź terminy wypłat dla kategorii: ${categoryData.description}`,
+      type: 'website',
+      locale: 'pl_PL',
     },
   };
 }
 
-export default function CategoryPage({ params }: CategoryPageProps) {
-  const categoryData = PAYMENT_CATEGORIES.find(cat => cat.id === params.category);
+export default async function CategoryPage({ params }: CategoryPageProps) {
+  const { category } = await params;
+  const categoryData = PAYMENT_CATEGORIES.find(cat => cat.id === category);
   
   if (!categoryData) {
     notFound();
   }
 
   const payments: Payment[] = paymentsData as Payment[];
-  const categoryPayments = payments.filter(payment => payment.category === params.category);
+  const categoryPayments = payments.filter(payment => payment.category === category);
 
   const getNextPayment = () => {
     const today = new Date();
@@ -97,7 +102,7 @@ export default function CategoryPage({ params }: CategoryPageProps) {
               </h2>
               <div className="category-page__payments-grid">
                 {categoryPayments.map((payment) => (
-                  <PaymentCard key={payment.id} payment={payment} />
+                  <PaymentCard key={payment.id} payment={payment} linkToDetail={true} />
                 ))}
               </div>
             </>
@@ -112,17 +117,17 @@ export default function CategoryPage({ params }: CategoryPageProps) {
           <h2 className="category-page__section-title">Inne kategorie</h2>
           <div className="category-page__other-grid">
             {PAYMENT_CATEGORIES
-              .filter(cat => cat.id !== params.category)
-              .map((category) => (
+              .filter(cat => cat.id !== category)
+              .map((categoryItem) => (
                 <a
-                  key={category.id}
-                  href={`/kategoria/${category.id}`}
+                  key={categoryItem.id}
+                  href={`/${categoryItem.id}`}
                   className="category-page__other-card"
                 >
-                  <span className="category-page__other-icon">{category.icon}</span>
+                  <span className="category-page__other-icon">{categoryItem.icon}</span>
                   <div className="category-page__other-info">
-                    <h3 className="category-page__other-name">{category.name}</h3>
-                    <p className="category-page__other-desc">{category.description}</p>
+                    <h3 className="category-page__other-name">{categoryItem.name}</h3>
+                    <p className="category-page__other-desc">{categoryItem.description}</p>
                   </div>
                 </a>
               ))}
