@@ -1,4 +1,5 @@
-import { notFound, redirect } from 'next/navigation';
+import { notFound } from 'next/navigation';
+import Link from 'next/link';
 import PaymentCard from '@/components/payment-card/payment-card';
 import { Payment, PAYMENT_CATEGORIES } from '@/types/payment';
 import paymentsData from '../../../data/payments.json';
@@ -70,7 +71,7 @@ export default async function CategoryPage({ params }: CategoryPageProps) {
       <div className="container">
         <header className="category-page__header">
           <div className="category-page__breadcrumb">
-            <a href="/" className="category-page__breadcrumb-link">Strona główna</a>
+            <Link href="/" className="category-page__breadcrumb-link">Strona główna</Link>
             <span className="category-page__breadcrumb-separator">→</span>
             <span className="category-page__breadcrumb-current">{categoryData.name}</span>
           </div>

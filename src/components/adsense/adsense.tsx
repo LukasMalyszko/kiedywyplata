@@ -10,9 +10,13 @@ interface AdSenseProps {
   className?: string;
 }
 
+interface AdsByGoogleAd {
+  [key: string]: unknown;
+}
+
 declare global {
   interface Window {
-    adsbygoogle: any[];
+    adsbygoogle: AdsByGoogleAd[];
   }
 }
 

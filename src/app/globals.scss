@@ -355,6 +355,27 @@ a {
   }
 }
 
+// Equal height utilities for grid/flex layouts
+.equal-height-grid {
+  display: grid;
+  
+  > * {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+  }
+}
+
+.equal-height-flex {
+  display: flex;
+  
+  > * {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+  }
+}
+
 // Ensure proper theme transitions
 * {
   transition-property: background-color, border-color, color, box-shadow;

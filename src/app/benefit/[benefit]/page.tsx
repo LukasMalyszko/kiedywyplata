@@ -1,4 +1,5 @@
 import { notFound } from 'next/navigation';
+import Link from 'next/link';
 import PaymentCard from '@/components/payment-card/payment-card';
 import { Payment, PAYMENT_CATEGORIES } from '@/types/payment';
 import { getEffectiveNextPayment, daysUntil as computeDaysUntil } from '@/lib/payments';
@@ -74,13 +75,13 @@ export default async function BenefitPage({ params }: BenefitPageProps) {
       <div className="container">
         <header className="benefit-page__header">
           <div className="benefit-page__breadcrumb">
-            <a href="/" className="benefit-page__breadcrumb-link">Strona główna</a>
+            <Link href="/" className="benefit-page__breadcrumb-link">Strona główna</Link>
             <span className="benefit-page__breadcrumb-separator">→</span>
             {categoryData && (
               <>
-                <a href={`/${payment.category}`} className="benefit-page__breadcrumb-link">
+                <Link href={`/${payment.category}`} className="benefit-page__breadcrumb-link">
                   {categoryData.name}
-                </a>
+                </Link>
                 <span className="benefit-page__breadcrumb-separator">→</span>
               </>
             )}
@@ -166,13 +167,13 @@ export default async function BenefitPage({ params }: BenefitPageProps) {
 
         <section className="benefit-page__actions">
           <div className="benefit-page__action-buttons">
-            <a href="/" className="button button--secondary">
+            <Link href="/" className="button button--secondary">
               ← Powrót do strony głównej
-            </a>
+            </Link>
             {categoryData && (
-              <a href={`/${payment.category}`} className="button button--primary">
+              <Link href={`/${payment.category}`} className="button button--primary">
                 Zobacz wszystkie: {categoryData.name}
-              </a>
+              </Link>
             )}
           </div>
         </section>

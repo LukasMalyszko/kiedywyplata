@@ -1,16 +1,13 @@
 'use client';
 
-import { useState, useEffect } from 'react';
 import Link from 'next/link';
-import ThemeToggle from '@/components/theme-toggle/theme-toggle';
+import dynamic from 'next/dynamic';
 import './header.scss';
 
-export default function Header() {
-  const [mounted, setMounted] = useState(false);
+// Dynamically import ThemeToggle to avoid hydration issues
+const ThemeToggle = dynamic(() => import('@/components/theme-toggle/theme-toggle'), { ssr: false });
 
-  useEffect(() => {
-    setMounted(true);
-  }, []);
+export default function Header() {
 
   return (
     <header className="header">
@@ -37,7 +34,7 @@ export default function Header() {
           </nav>
           
           <div className="header__actions">
-            {mounted && <ThemeToggle />}
+            <ThemeToggle />
           </div>
         </div>
       </div>
