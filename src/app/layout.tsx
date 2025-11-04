@@ -1,5 +1,7 @@
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
+import { ThemeProvider } from "@/contexts/theme-context";
+import Header from "@/components/header/header";
 import "./globals.scss";
 
 const inter = Inter({
@@ -26,14 +28,21 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
-      <body className={inter.variable}>
+    <html lang="pl" suppressHydrationWarning>
+      <head>
         <script 
           async 
           src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-XXXXXXXXXXXXXXXX"
           crossOrigin="anonymous"
         />
-        {children}
+      </head>
+      <body className={inter.variable} suppressHydrationWarning>
+        <ThemeProvider>
+          <Header />
+          <main className="main">
+            {children}
+          </main>
+        </ThemeProvider>
       </body>
     </html>
   );

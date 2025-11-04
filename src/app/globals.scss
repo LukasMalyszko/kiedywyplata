@@ -1,17 +1,6 @@
-// Base variables
+// Theme Variables System
 :root {
-  --color-primary: #0070f3;
-  --color-primary-dark: #0051cc;
-  --color-secondary: #666666;
-  --color-text: #333333;
-  --color-text-light: #666666;
-  --color-background: #ffffff;
-  --color-background-light: #f8f9fa;
-  --color-border: #e1e5e9;
-  --color-success: #28a745;
-  --color-warning: #ffc107;
-  --color-error: #dc3545;
-  
+  // Static variables (unchanged across themes)
   --font-family-primary: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
   --font-size-base: 16px;
   --font-size-small: 14px;
@@ -30,20 +19,77 @@
   --border-radius-sm: 4px;
   --border-radius-lg: 12px;
   
-  --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.1);
-  --shadow-md: 0 4px 6px rgba(0, 0, 0, 0.1);
-  --shadow-lg: 0 10px 25px rgba(0, 0, 0, 0.15);
+  --transition-fast: 0.15s ease;
+  --transition-normal: 0.3s ease;
+  --transition-slow: 0.5s ease;
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --color-text: #ffffff;
-    --color-text-light: #cccccc;
-    --color-background: #0a0a0a;
-    --color-background-light: #1a1a1a;
-    --color-border: #333333;
-    --color-secondary: #999999;
-  }
+// Light Theme (Default)
+[data-theme="light"] {
+  --color-primary: #0070f3;
+  --color-primary-hover: #0051cc;
+  --color-primary-dark: #0051cc;
+  --color-secondary: #666666;
+  
+  --color-text: #1a1a1a;
+  --color-text-light: #666666;
+  --color-text-muted: #999999;
+  
+  --color-background: #ffffff;
+  --color-background-alt: #f8f9fa;
+  --color-background-elevated: #ffffff;
+  
+  --color-border: #e1e5e9;
+  --color-border-light: #f1f3f4;
+  
+  --color-hover-bg: rgba(0, 112, 243, 0.04);
+  --color-focus-ring: rgba(0, 112, 243, 0.3);
+  
+  --color-success: #28a745;
+  --color-warning: #ffc107;
+  --color-error: #dc3545;
+  --color-info: #17a2b8;
+  
+  --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.1);
+  --shadow-md: 0 4px 12px rgba(0, 0, 0, 0.08);
+  --shadow-lg: 0 8px 32px rgba(0, 0, 0, 0.12);
+  
+  --gradient-primary: linear-gradient(135deg, #0070f3 0%, #00d4ff 100%);
+  --gradient-secondary: linear-gradient(135deg, #f8f9fa 0%, #ffffff 100%);
+}
+
+// Dark Theme
+[data-theme="dark"] {
+  --color-primary: #3b82f6;
+  --color-primary-hover: #2563eb;
+  --color-primary-dark: #2563eb;
+  --color-secondary: #9ca3af;
+  
+  --color-text: #f9fafb;
+  --color-text-light: #d1d5db;
+  --color-text-muted: #9ca3af;
+  
+  --color-background: #0f172a;
+  --color-background-alt: #1e293b;
+  --color-background-elevated: #334155;
+  
+  --color-border: #374151;
+  --color-border-light: #4b5563;
+  
+  --color-hover-bg: rgba(59, 130, 246, 0.1);
+  --color-focus-ring: rgba(59, 130, 246, 0.4);
+  
+  --color-success: #10b981;
+  --color-warning: #f59e0b;
+  --color-error: #ef4444;
+  --color-info: #06b6d4;
+  
+  --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.3);
+  --shadow-md: 0 4px 12px rgba(0, 0, 0, 0.25);
+  --shadow-lg: 0 8px 32px rgba(0, 0, 0, 0.4);
+  
+  --gradient-primary: linear-gradient(135deg, #3b82f6 0%, #06b6d4 100%);
+  --gradient-secondary: linear-gradient(135deg, #1e293b 0%, #334155 100%);
 }
 
 // Reset and base styles
@@ -62,6 +108,7 @@ body {
   font-family: var(--font-family-primary);
   color: var(--color-text);
   background-color: var(--color-background);
+  transition: background-color var(--transition-normal), color var(--transition-normal);
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
@@ -93,10 +140,10 @@ p {
 a {
   color: var(--color-primary);
   text-decoration: none;
-  transition: color 0.2s ease;
+  transition: color var(--transition-fast);
   
   &:hover {
-    color: var(--color-primary-dark);
+    color: var(--color-primary-hover);
   }
 }
 
@@ -130,18 +177,27 @@ a {
     color: white;
     
     &:hover {
-      background-color: var(--color-primary-dark);
+      background-color: var(--color-primary-hover);
+      transform: translateY(-1px);
+    }
+    
+    &:focus {
+      box-shadow: 0 0 0 3px var(--color-focus-ring);
     }
   }
   
   &--secondary {
     background-color: transparent;
     color: var(--color-primary);
-    border: 1px solid var(--color-primary);
+    border: 1px solid var(--color-border);
     
     &:hover {
-      background-color: var(--color-primary);
-      color: white;
+      background-color: var(--color-hover-bg);
+      border-color: var(--color-primary);
+    }
+    
+    &:focus {
+      box-shadow: 0 0 0 3px var(--color-focus-ring);
     }
   }
   
@@ -157,15 +213,16 @@ a {
 }
 
 .card {
-  background-color: var(--color-background);
+  background-color: var(--color-background-elevated);
   border: 1px solid var(--color-border);
   border-radius: var(--border-radius);
   padding: var(--spacing-lg);
   box-shadow: var(--shadow-sm);
-  transition: box-shadow 0.2s ease;
+  transition: all var(--transition-normal);
   
   &:hover {
     box-shadow: var(--shadow-md);
+    transform: translateY(-2px);
   }
   
   &__header {
@@ -230,7 +287,7 @@ a {
   }
   
   &--muted {
-    color: var(--color-text-light);
+    color: var(--color-text-muted);
   }
   
   &--success {
@@ -243,6 +300,10 @@ a {
   
   &--error {
     color: var(--color-error);
+  }
+  
+  &--info {
+    color: var(--color-info);
   }
 }
 
@@ -260,8 +321,43 @@ a {
   &--mt-xl { margin-top: var(--spacing-xl); }
 }
 
-@media (prefers-color-scheme: dark) {
-  html {
-    color-scheme: dark;
+// Theme-aware scrollbars
+* {
+  scrollbar-width: thin;
+  scrollbar-color: var(--color-border) var(--color-background-alt);
+}
+
+*::-webkit-scrollbar {
+  width: 8px;
+}
+
+*::-webkit-scrollbar-track {
+  background: var(--color-background-alt);
+}
+
+*::-webkit-scrollbar-thumb {
+  background-color: var(--color-border);
+  border-radius: 4px;
+  border: 2px solid var(--color-background-alt);
+}
+
+*::-webkit-scrollbar-thumb:hover {
+  background-color: var(--color-primary);
+}
+
+// Main content area
+.main {
+  min-height: calc(100vh - 80px); // Subtract header height
+  padding: var(--spacing-lg) 0;
+  
+  @media (max-width: 768px) {
+    padding: var(--spacing-md) 0;
   }
+}
+
+// Ensure proper theme transitions
+* {
+  transition-property: background-color, border-color, color, box-shadow;
+  transition-duration: var(--transition-normal);
+  transition-timing-function: ease;
 }

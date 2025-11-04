@@ -28,7 +28,7 @@ export async function generateMetadata({ params }: BenefitPageProps) {
       title: 'Świadczenie nie znalezione - Kiedy Wypłata',
     };
   }
-  // Use effective next payment for metadata description
+  // Use effective next payment for metadata description  
   const effective = new Date(getEffectiveNextPayment(payment));
 
   return {
