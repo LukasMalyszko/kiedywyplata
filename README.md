@@ -103,15 +103,38 @@ Projekt używa metodologii BEM dla CSS:
 
 ## 🚀 Wdrożenie
 
-### Vercel (Zalecane)
+### Automatyczne wdrożenie z Vercel
+
+1. **Połącz z GitHub**: Wypchnij kod do repozytorium GitHub
+2. **Połącz z Vercel**: Przejdź na [vercel.com](https://vercel.com) → "New Project" → importuj repo
+3. **Skonfiguruj zmienne**: Dodaj zmienne środowiskowe w dashboardzie Vercel
+4. **Gotowe!**: Vercel automatycznie wdroży przy każdym push do `main`
+
+### Ręczne wdrożenie
 
 ```bash
 # Zainstaluj Vercel CLI
 npm i -g vercel
 
-# Wdróż aplikację
+# Zaloguj się
+vercel login
+
+# Wdróż na preview
 vercel
+
+# Wdróż na produkcję
+vercel --prod
 ```
+
+### CI/CD Pipeline
+
+Projekt zawiera:
+- **GitHub Actions**: Automatyczne testy i buildy
+- **Vercel Integration**: Auto-deploy z GitHub
+- **Preview Deployments**: Dla pull requestów
+- **Production Deploys**: Z brancha `main`
+
+Szczegółowe instrukcje: [`DEPLOYMENT.md`](./DEPLOYMENT.md)
 
 ## 📄 Licencja
 
