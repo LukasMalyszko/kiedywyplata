@@ -1,0 +1,129 @@
+import { Payment } from '@/types/payment';
+
+const POLISH_MONTHS: Record<string, number> = {
+  styczeń: 0, stycznia: 0,
+  luty: 1, lutego: 1,
+  marzec: 2, marca: 2,
+  kwiecień: 3, kwietnia: 3,
+  maj: 4, maja: 4,
+  czerwiec: 5, czerwca: 5,
+  lipiec: 6, lipca: 6,
+  sierpień: 7, sierpnia: 7,
+  wrzesień: 8, września: 8,
+  październik: 9, października: 9,
+  listopad: 10, listopada: 10,
+  grudzień: 11, grudnia: 11,
+};
+
+function clampDay(year: number, month: number, day: number) {
+  const last = new Date(year, month + 1, 0).getDate();
+  return Math.min(Math.max(1, day), last);
+}
+
+function addMonths(date: Date, months: number) {
+  const d = new Date(date);
+  const targetMonth = d.getMonth() + months;
+  const year = d.getFullYear() + Math.floor(targetMonth / 12);
+  const month = ((targetMonth % 12) + 12) % 12;
+  const day = clampDay(year, month, d.getDate());
+  return new Date(year, month, day, d.getHours(), d.getMinutes(), d.getSeconds(), d.getMilliseconds());
+}
+
+function parseNumbers(schedule: string): number[] {
+  const matches = schedule.match(/\b(\d{1,2})\b/g);
+  if (!matches) return [];
+  const nums = Array.from(new Set(matches.map((m) => parseInt(m, 10)))).filter(n => n >=1 && n <= 31);
+  return nums.sort((a,b)=>a-b);
+}
+
+function findPolishMonth(schedule: string): number | null {
+  const lower = schedule.toLowerCase();
+  for (const key of Object.keys(POLISH_MONTHS)) {
+    if (lower.includes(key)) return POLISH_MONTHS[key];
+  }
+  return null;
+}
+
+export function getEffectiveNextPayment(payment: Payment, refDate = new Date()): string {
+  // If next_payment already in future, return it
+  if (payment.next_payment) {
+    const np = new Date(payment.next_payment);
+    if (!isNaN(np.getTime()) && np >= startOfDay(refDate)) {
+      return np.toISOString();
+    }
+  }
+
+  const schedule = (payment.schedule || '').toLowerCase();
+
+  // 1) If schedule contains explicit days (monthly)
+  const days = parseNumbers(schedule);
+  if (days.length > 0) {
+    // find next day in current month
+    const year = refDate.getFullYear();
+    const month = refDate.getMonth();
+    for (const day of days) {
+      const d = new Date(year, month, clampDay(year, month, day));
+      if (d >= startOfDay(refDate)) return d.toISOString();
+    }
+    // otherwise take earliest in next month
+    const nextMonth = addMonths(new Date(year, month, 1), 1);
+    const y2 = nextMonth.getFullYear();
+    const m2 = nextMonth.getMonth();
+    const d2 = new Date(y2, m2, clampDay(y2, m2, days[0]));
+    return d2.toISOString();
+  }
+
+  // 2) If schedule mentions a month -> choose last day of that month in current or next year
+  const monthNumber = findPolishMonth(schedule);
+  if (monthNumber !== null) {
+    const year = refDate.getFullYear();
+    const candidate = new Date(year, monthNumber + 1, 0); // last day of month
+    if (candidate >= startOfDay(refDate)) return candidate.toISOString();
+    const candidateNext = new Date(year + 1, monthNumber + 1, 0);
+    return candidateNext.toISOString();
+  }
+
+  // 3) If schedule contains words like "co miesiąc" or "miesiąc", assume same day-of-month as previous next_payment if valid, else use refDate + 1 month
+  if (/miesi[aą]c|co miesi[aą]c|miesi[ąa]c/.test(schedule)) {
+    // try to use day of payment.next_payment if present
+    if (payment.next_payment) {
+      const last = new Date(payment.next_payment);
+      if (!isNaN(last.getTime())) {
+        let candidate = new Date(last);
+        while (candidate < startOfDay(refDate)) {
+          candidate = addMonths(candidate, 1);
+        }
+        return candidate.toISOString();
+      }
+    }
+    // fallback: use first day of next month
+    const next = addMonths(startOfDay(refDate), 1);
+    return new Date(next.getFullYear(), next.getMonth(), 1).toISOString();
+  }
+
+  // 4) Fallback: if next_payment exists but in past, increment month until in future
+  if (payment.next_payment) {
+    let candidate = new Date(payment.next_payment);
+    if (isNaN(candidate.getTime())) candidate = startOfDay(refDate);
+    let safety = 0;
+    while (candidate < startOfDay(refDate) && safety < 36) {
+      candidate = addMonths(candidate, 1);
+      safety++;
+    }
+    return candidate.toISOString();
+  }
+
+  // 5) Last fallback: tomorrow
+  const tomorrow = new Date(startOfDay(refDate).getTime() + 24 * 60 * 60 * 1000);
+  return tomorrow.toISOString();
+}
+
+function startOfDay(d: Date) {
+  return new Date(d.getFullYear(), d.getMonth(), d.getDate());
+}
+
+export function daysUntil(dateISO: string, refDate = new Date()): number {
+  const d = new Date(dateISO);
+  const diff = startOfDay(d).getTime() - startOfDay(refDate).getTime();
+  return Math.ceil(diff / (1000 * 60 * 60 * 24));
+}

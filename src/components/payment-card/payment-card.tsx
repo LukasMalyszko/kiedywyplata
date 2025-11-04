@@ -2,6 +2,7 @@
 
 import Link from 'next/link';
 import { Payment } from '@/types/payment';
+import { getEffectiveNextPayment, daysUntil } from '@/lib/payments';
 import './payment-card.scss';
 
 interface PaymentCardProps {
@@ -11,6 +12,7 @@ interface PaymentCardProps {
 }
 
 export default function PaymentCard({ payment, showNextPayment = true, linkToDetail = true }: PaymentCardProps) {
+  const effectiveISO = getEffectiveNextPayment(payment);
   const formatDate = (dateString: string) => {
     const date = new Date(dateString);
     return date.toLocaleDateString('pl-PL', {
@@ -20,17 +22,9 @@ export default function PaymentCard({ payment, showNextPayment = true, linkToDet
     });
   };
 
-  const getDaysUntilPayment = (dateString: string) => {
-    const paymentDate = new Date(dateString);
-    const today = new Date();
-    const diffTime = paymentDate.getTime() - today.getTime();
-    const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
-    return diffDays;
-  };
-
-  const daysUntil = getDaysUntilPayment(payment.next_payment);
-  const isUpcoming = daysUntil <= 7 && daysUntil >= 0;
-  const isPast = daysUntil < 0;
+  const computedDaysUntil = daysUntil(effectiveISO);
+  const isUpcoming = computedDaysUntil <= 7 && computedDaysUntil >= 0;
+  const isPast = computedDaysUntil < 0;
 
   const cardContent = (
     <div className={`payment-card ${isUpcoming ? 'payment-card--upcoming' : ''} ${isPast ? 'payment-card--past' : ''}`}>
@@ -40,11 +34,11 @@ export default function PaymentCard({ payment, showNextPayment = true, linkToDet
           <div className="payment-card__date">
             <span className="payment-card__date-label">Następna wypłata:</span>
             <span className="payment-card__date-value">
-              {formatDate(payment.next_payment)}
+              {formatDate(effectiveISO)}
             </span>
             {!isPast && (
               <span className="payment-card__days-counter">
-                {daysUntil === 0 ? 'Dziś!' : daysUntil === 1 ? 'Jutro' : `za ${daysUntil} dni`}
+                {computedDaysUntil === 0 ? 'Dziś!' : computedDaysUntil === 1 ? 'Jutro' : `za ${computedDaysUntil} dni`}
               </span>
             )}
           </div>

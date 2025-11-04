@@ -1,6 +1,7 @@
 import { notFound } from 'next/navigation';
 import PaymentCard from '@/components/payment-card/payment-card';
 import { Payment, PAYMENT_CATEGORIES } from '@/types/payment';
+import { getEffectiveNextPayment, daysUntil as computeDaysUntil } from '@/lib/payments';
 import paymentsData from '../../../../data/payments.json';
 import './page.scss';
 
@@ -27,10 +28,12 @@ export async function generateMetadata({ params }: BenefitPageProps) {
       title: 'Świadczenie nie znalezione - Kiedy Wypłata',
     };
   }
+  // Use effective next payment for metadata description
+  const effective = new Date(getEffectiveNextPayment(payment));
 
   return {
     title: `${payment.name} - Kiedy Wypłata`,
-    description: `${payment.description} Sprawdź termin wypłaty: ${new Date(payment.next_payment).toLocaleDateString('pl-PL')}`,
+    description: `${payment.description} Sprawdź termin wypłaty: ${effective.toLocaleDateString('pl-PL')}`,
     keywords: `wypłata ${payment.name.toLowerCase()}, ${payment.schedule.toLowerCase()}, terminy wypłat`,
     openGraph: {
       title: `${payment.name} - Kiedy Wypłata`,
@@ -58,10 +61,11 @@ export default async function BenefitPage({ params }: BenefitPageProps) {
     .filter(p => p.category === payment.category && p.id !== payment.id)
     .slice(0, 3);
 
-  // Calculate days until payment
+  // Calculate effective next payment and days until
   const today = new Date();
-  const paymentDate = new Date(payment.next_payment);
-  const daysUntil = Math.ceil((paymentDate.getTime() - today.getTime()) / (1000 * 60 * 60 * 24));
+  const effectiveISO = getEffectiveNextPayment(payment, today);
+  const paymentDate = new Date(effectiveISO);
+  const daysUntil = computeDaysUntil(effectiveISO, today);
   const isUpcoming = daysUntil >= 0 && daysUntil <= 7;
   const isPast = daysUntil < 0;
 

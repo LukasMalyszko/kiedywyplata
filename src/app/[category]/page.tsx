@@ -2,6 +2,7 @@ import { notFound, redirect } from 'next/navigation';
 import PaymentCard from '@/components/payment-card/payment-card';
 import { Payment, PAYMENT_CATEGORIES } from '@/types/payment';
 import paymentsData from '../../../data/payments.json';
+import { getEffectiveNextPayment } from '@/lib/payments';
 import './page.scss';
 
 interface CategoryPageProps {
@@ -52,11 +53,14 @@ export default async function CategoryPage({ params }: CategoryPageProps) {
 
   const getNextPayment = () => {
     const today = new Date();
-    const upcomingPayments = categoryPayments
-      .filter(payment => new Date(payment.next_payment) >= today)
-      .sort((a, b) => new Date(a.next_payment).getTime() - new Date(b.next_payment).getTime());
-    
-    return upcomingPayments[0] || null;
+    const startToday = new Date(today.getFullYear(), today.getMonth(), today.getDate());
+    const withEffective = categoryPayments
+      .map(p => ({ p, iso: getEffectiveNextPayment(p, today) }))
+      .map(({ p, iso }) => ({ p, date: new Date(iso) }))
+      .filter(({ date }) => date >= startToday)
+      .sort((a, b) => a.date.getTime() - b.date.getTime());
+
+    return withEffective[0] ? withEffective[0].p : null;
   };
 
   const nextPayment = getNextPayment();
@@ -84,7 +88,7 @@ export default async function CategoryPage({ params }: CategoryPageProps) {
               <h2 className="category-page__next-title">Najbliższa wypłata w tej kategorii:</h2>
               <div className="category-page__next-card">
                 <strong>{nextPayment.name}</strong>
-                <span>{new Date(nextPayment.next_payment).toLocaleDateString('pl-PL', {
+                <span>{new Date(getEffectiveNextPayment(nextPayment)).toLocaleDateString('pl-PL', {
                   day: '2-digit',
                   month: 'long',
                   year: 'numeric'

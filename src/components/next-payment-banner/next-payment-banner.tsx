@@ -1,6 +1,7 @@
 'use client';
 
 import { Payment } from '@/types/payment';
+import { getEffectiveNextPayment, daysUntil } from '@/lib/payments';
 import './next-payment-banner.scss';
 
 interface NextPaymentBannerProps {
@@ -10,11 +11,14 @@ interface NextPaymentBannerProps {
 export default function NextPaymentBanner({ payments }: NextPaymentBannerProps) {
   const getNextPayment = () => {
     const today = new Date();
-    const upcomingPayments = payments
-      .filter(payment => new Date(payment.next_payment) >= today)
-      .sort((a, b) => new Date(a.next_payment).getTime() - new Date(b.next_payment).getTime());
-    
-    return upcomingPayments[0] || null;
+    const withEffective = payments.map(p => ({ p, iso: getEffectiveNextPayment(p, today) }));
+    const startToday = new Date(today.getFullYear(), today.getMonth(), today.getDate());
+    const upcoming = withEffective
+      .map(({ p, iso }) => ({ p, date: new Date(iso) }))
+      .filter(({ date }) => date >= startToday)
+      .sort((a, b) => a.date.getTime() - b.date.getTime());
+
+    return upcoming[0] ? upcoming[0].p : null;
   };
 
   const formatDate = (dateString: string) => {
@@ -26,13 +30,7 @@ export default function NextPaymentBanner({ payments }: NextPaymentBannerProps) 
     });
   };
 
-  const getDaysUntilPayment = (dateString: string) => {
-    const paymentDate = new Date(dateString);
-    const today = new Date();
-    const diffTime = paymentDate.getTime() - today.getTime();
-    const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
-    return diffDays;
-  };
+  const getDaysUntilPayment = (dateString: string) => daysUntil(dateString);
 
   const nextPayment = getNextPayment();
 
@@ -40,9 +38,10 @@ export default function NextPaymentBanner({ payments }: NextPaymentBannerProps) 
     return null;
   }
 
-  const daysUntil = getDaysUntilPayment(nextPayment.next_payment);
-  const isToday = daysUntil === 0;
-  const isTomorrow = daysUntil === 1;
+  const effectiveISO = getEffectiveNextPayment(nextPayment);
+  const daysUntilVal = getDaysUntilPayment(effectiveISO);
+  const isToday = daysUntilVal === 0;
+  const isTomorrow = daysUntilVal === 1;
 
   return (
     <div className={`next-payment-banner ${isToday ? 'next-payment-banner--today' : ''}`}>
@@ -56,10 +55,10 @@ export default function NextPaymentBanner({ payments }: NextPaymentBannerProps) 
               {isToday ? 'Dziś wypłata!' : isTomorrow ? 'Jutro wypłata!' : 'Najbliższa wypłata:'}
             </h2>
             <p className="next-payment-banner__details">
-              <strong>{nextPayment.name}</strong> - {formatDate(nextPayment.next_payment)}
+              <strong>{nextPayment.name}</strong> - {formatDate(effectiveISO)}
               {!isToday && !isTomorrow && (
                 <span className="next-payment-banner__countdown">
-                  (za {daysUntil} {daysUntil === 1 ? 'dzień' : daysUntil < 5 ? 'dni' : 'dni'})
+                  (za {daysUntilVal} {daysUntilVal === 1 ? 'dzień' : daysUntilVal < 5 ? 'dni' : 'dni'})
                 </span>
               )}
             </p>
