@@ -7,6 +7,11 @@ export interface Payment {
   source: string;
   category: 'family' | 'pension' | 'benefits' | 'social';
   excludeFromNext?: boolean; // Optional flag to exclude from next payment calculations
+  frequency?: 'monthly' | 'yearly' | 'one-time'; // Payment frequency
+  institution?: string; // Institution responsible for payments
+  detailed_schedule?: string; // Detailed schedule information
+  assignment_method?: string; // How payment dates are assigned
+  official_name?: string; // Full official name of the benefit
 }
 
 export interface PaymentCategory {
@@ -20,7 +25,7 @@ export const PAYMENT_CATEGORIES: PaymentCategory[] = [
   {
     id: 'family',
     name: 'Świadczenia rodzinne',
-    description: '800+, zasiłki rodzinne, Dobry Start',
+    description: '800+, zasiłki rodzinne, Dobry Start, becikowe',
     icon: '👨‍👩‍👧‍👦'
   },
   {
@@ -32,13 +37,13 @@ export const PAYMENT_CATEGORIES: PaymentCategory[] = [
   {
     id: 'benefits',
     name: 'Zasiłki',
-    description: 'Chorobowe, macierzyńskie, opiekuńcze',
+    description: 'Chorobowe, macierzyńskie, opiekuńcze, dla bezrobotnych, pielęgnacyjne',
     icon: '🏥'
   },
   {
     id: 'social',
     name: 'Świadczenia socjalne',
-    description: 'Dodatek węglowy, wsparcie energetyczne',
+    description: 'Dodatki mieszkaniowe, węglowe, zasiłki stałe',
     icon: '🏠'
   }
 ];

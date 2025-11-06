@@ -119,13 +119,13 @@ export default async function BenefitPage({ params }: BenefitPageProps) {
                   (payment.id === 'dobry-start' ? 'Wypłata roczna:' : 'Jednorazowa wypłata:') :
                   (isPast ? 'Ostatnia wypłata:' : 'Następna wypłata:')}
               </h2>
-              <div className="benefit-page__date-value">
+              {payment.next_payment !== "" && <div className="benefit-page__date-value">
                 {paymentDate.toLocaleDateString('pl-PL', {
                   day: '2-digit',
                   month: 'long',
                   year: 'numeric'
                 })}
-              </div>
+              </div>}
               {!isPast && !payment.excludeFromNext && (
                 <div className="benefit-page__countdown">
                   {daysUntil === 0 ? '🎉 Dziś!' : 

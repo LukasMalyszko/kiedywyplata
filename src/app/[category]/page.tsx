@@ -86,7 +86,7 @@ export default async function CategoryPage({ params }: CategoryPageProps) {
             </div>
           </div>
 
-          {nextPayment && (
+          {nextPayment && nextPayment.next_payment !== "" && (
             <div className="category-page__next-payment">
               <h2 className="category-page__next-title">Najbliższa wypłata w tej kategorii:</h2>
               <div className="category-page__next-card">

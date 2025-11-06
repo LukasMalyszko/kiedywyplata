@@ -34,7 +34,7 @@ export default function PaymentCard({ payment, showNextPayment = true, linkToDet
     <div className={`payment-card ${isUpcoming ? 'payment-card--upcoming' : ''} ${isPast ? 'payment-card--past' : ''}`}>
       <div className="payment-card__header">
         <h3 className="payment-card__title">{payment.name}</h3>
-        {showNextPayment && (
+        {showNextPayment && payment.next_payment !== "" && (
           <div className="payment-card__date">
             <span className="payment-card__date-label">
               {payment.excludeFromNext ? 

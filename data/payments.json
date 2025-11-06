@@ -2,20 +2,44 @@
   {
     "id": "800plus",
     "name": "Świadczenie 800+",
-    "next_payment": "2025-11-25",
-    "schedule": "do 25. dnia każdego miesiąca",
-    "description": "Wypłaty 800+ realizowane są przez ZUS do 25 dnia każdego miesiąca na wskazany rachunek bankowy.",
+    "next_payment": "2025-11-22",
+    "schedule": "2., 4., 7., 9., 12., 14., 16., 18., 20. lub 22. dnia każdego miesiąca",
+    "description": "Świadczenie wychowawcze wypłacane miesięcznie przez ZUS w stałych terminach przypisanych indywidualnie do beneficjenta.",
     "source": "https://www.zus.pl/",
-    "category": "family"
+    "category": "family",
+    "frequency": "monthly",
+    "institution": "ZUS",
+    "detailed_schedule": "Terminy wypłat: 2., 4., 7., 9., 12., 14., 16., 18., 20. lub 22. dnia każdego miesiąca",
+    "assignment_method": "Konkretny termin jest przypisany indywidualnie do beneficjenta i wynika ze złożenia wniosku",
+    "official_name": "Świadczenie wychowawcze (Rodzina 800 plus)"
+  },
+  {
+    "id": "becikowe",
+    "name": "Świadczenie becikowe",
+    "next_payment": "",
+    "schedule": "do 30 dni od złożenia wniosku",
+    "description": "Jednorazowa zapomoga z tytułu urodzenia dziecka wypłacana po spełnieniu warunków i złożeniu wniosku.",
+    "source": "https://www.zus.pl/",
+    "category": "family",
+    "excludeFromNext": true,
+    "frequency": "one-time",
+    "institution": "ZUS",
+    "detailed_schedule": "Zazwyczaj w ciągu 30 dni od dostarczenia pełnej dokumentacji",
+    "official_name": "Jednorazowa zapomoga z tytułu urodzenia dziecka (Becikowe)"
   },
   {
     "id": "emerytura",
-    "name": "Emerytura ZUS i KRUS",
+    "name": "Emerytury i renty ZUS",
     "next_payment": "2025-11-10",
-    "schedule": "10, 15, 20, 25 każdego miesiąca",
-    "description": "Wypłaty emerytur ZUS następują w kilku terminach zależnych od daty świadczenia.",
+    "schedule": "1., 5., 6., 10., 15., 20. i 25. dnia miesiąca",
+    "description": "Emerytury i renty wypłacane przez ZUS w stałych, z góry ustalonych terminach miesięcznych.",
     "source": "https://www.zus.pl/",
-    "category": "pension"
+    "category": "pension",
+    "frequency": "monthly",
+    "institution": "ZUS",
+    "detailed_schedule": "ZUS wypłaca świadczenia w stałych, z góry ustalonych dniach miesiąca: 1., 5., 6., 10., 15., 20. i 25. dnia miesiąca",
+    "assignment_method": "Termin jest przypisany do konkretnej osoby i jest stały",
+    "official_name": "Emerytury i renty"
   },
   {
     "id": "13-emerytura",
@@ -41,19 +65,27 @@
     "id": "zasilek-chorobowy",
     "name": "Zasiłek chorobowy",
     "next_payment": "2025-11-15",
-    "schedule": "w terminach wypłat wynagrodzeń",
-    "description": "Zasiłek chorobowy wypłacany jest przez pracodawcę lub ZUS w zależności od sytuacji.",
+    "schedule": "do 30 dni od złożenia dokumentacji",
+    "description": "Zasiłek chorobowy, macierzyński, opiekuńczy wypłacany przez ZUS po spełnieniu warunków.",
     "source": "https://www.zus.pl/",
-    "category": "benefits"
+    "category": "benefits",
+    "frequency": "monthly",
+    "institution": "ZUS",
+    "detailed_schedule": "ZUS ma do 30 dni od daty złożenia pełnej dokumentacji na wypłatę pierwszego świadczenia. Kolejne wypłaty w miarę kontynuacji uprawnień",
+    "official_name": "Zasiłek chorobowy, macierzyński, opiekuńczy, świadczenie rehabilitacyjne"
   },
   {
     "id": "zasilek-rodzinny",
     "name": "Zasiłek rodzinny",
-    "next_payment": "2025-11-20",
-    "schedule": "do 20. dnia każdego miesiąca",
-    "description": "Zasiłek rodzinny wypłacany jest przez gminy do 20. dnia każdego miesiąca.",
+    "next_payment": "2025-11-26",
+    "schedule": "26. lub 28. dnia miesiąca",
+    "description": "Zasiłek rodzinny wraz z dodatkami wypłacany miesięcznie przez Ośrodki Pomocy Społecznej lub Urzędy Miasta/Gminy.",
     "source": "https://www.gov.pl/",
-    "category": "family"
+    "category": "family",
+    "frequency": "monthly",
+    "institution": "OPS/Urząd Miasta/Gminy",
+    "detailed_schedule": "Terminy mogą się różnić w zależności od konkretnej gminy, ale często są ustalane na konkretny dzień miesiąca, np. 26. lub 28. dnia miesiąca",
+    "official_name": "Zasiłek rodzinny wraz z dodatkami, Świadczenie rodzicielskie"
   },
   {
     "id": "zasilek-macierzynski",
@@ -82,6 +114,58 @@
     "description": "Dodatek węglowy to jednorazowe wsparcie dla gospodarstw domowych.",
     "source": "https://www.gov.pl/",
     "category": "social",
-    "excludeFromNext": true
+    "excludeFromNext": true,
+    "frequency": "one-time",
+    "institution": "OPS/Urząd Miasta/Gminy"
+  },
+  {
+    "id": "zasilek-pielegnacyjny",
+    "name": "Zasiłek pielęgnacyjny",
+    "next_payment": "2025-11-28",
+    "schedule": "do 28. dnia miesiąca",
+    "description": "Zasiłek pielęgnacyjny wypłacany miesięcznie przez Ośrodki Pomocy Społecznej.",
+    "source": "https://www.gov.pl/",
+    "category": "benefits",
+    "frequency": "monthly",
+    "institution": "OPS/Urząd Miasta",
+    "detailed_schedule": "Wypłacane przez OPS/Urząd Miasta w ustalonych terminach (często pod koniec miesiąca)",
+    "official_name": "Zasiłek pielęgnacyjny, Świadczenie pielęgnacyjne, Zasiłek dla opiekuna"
+  },
+  {
+    "id": "zasilek-dla-bezrobotnych",
+    "name": "Zasiłek dla bezrobotnych",
+    "next_payment": "2025-11-15",
+    "schedule": "w ustalonych dniach miesiąca",
+    "description": "Zasiłek dla bezrobotnych wypłacany miesięcznie przez Powiatowe Urzędy Pracy.",
+    "source": "https://www.gov.pl/",
+    "category": "benefits",
+    "frequency": "monthly",
+    "institution": "Powiatowy Urząd Pracy",
+    "detailed_schedule": "Terminy wypłat ustalane są przez Powiatowe Urzędy Pracy i mogą się różnić w zależności od urzędu. Zazwyczaj jest to jeden lub kilka stałych dni w miesiącu"
+  },
+  {
+    "id": "zasilek-staly",
+    "name": "Zasiłek stały",
+    "next_payment": "2025-11-28",
+    "schedule": "do 28. dnia miesiąca", 
+    "description": "Zasiłek stały z pomocy społecznej wypłacany miesięcznie przez lokalny Ośrodek Pomocy Społecznej.",
+    "source": "https://www.gov.pl/",
+    "category": "social",
+    "frequency": "monthly",
+    "institution": "OPS",
+    "detailed_schedule": "Ustalane przez lokalny Ośrodek Pomocy Społecznej (OPS). Wypłaty często realizowane są pod koniec miesiąca (np. do 28. dnia)",
+    "official_name": "Zasiłek stały, okresowy, celowy"
+  },
+  {
+    "id": "dodatek-mieszkaniowy",
+    "name": "Dodatek mieszkaniowy",
+    "next_payment": "2025-11-28",
+    "schedule": "w ustalonych terminach lokalnych",
+    "description": "Dodatek mieszkaniowy wypłacany miesięcznie przez Gminny/Miejski Ośrodek Pomocy Społecznej.",
+    "source": "https://www.gov.pl/",
+    "category": "social",
+    "frequency": "monthly",
+    "institution": "Gminny/Miejski OPS lub Wydział Spraw Mieszkaniowych",
+    "detailed_schedule": "Wypłacany przez Gminny/Miejski Ośrodek Pomocy Społecznej lub Wydział Spraw Mieszkaniowych Urzędu Miasta/Gminy. Terminy są ustalane lokalnie"
   }
 ]
