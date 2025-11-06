@@ -39,9 +39,35 @@
     "@types/react-dom": "^19",
     "eslint": "^9",
     "eslint-config-next": "16.0.1",
-    "identity-obj-proxy": "^3.0.0",
     "jest": "^29.7.0",
     "jest-environment-jsdom": "^29.7.0",
+    "msw": "^2.6.4",
     "typescript": "^5"
+  },
+  "jest": {
+    "testEnvironment": "jsdom",
+    "setupFilesAfterEnv": ["<rootDir>/src/test-utils/setup-tests.ts"],
+    "moduleNameMapping": {
+      "^@/(.*)$": "<rootDir>/src/$1",
+      "\\.(css|less|scss|sass)$": "identity-obj-proxy"
+    },
+    "testMatch": [
+      "**/__tests__/**/*.(ts|tsx|js)",
+      "**/*.(test|spec).(ts|tsx|js)"
+    ],
+    "collectCoverageFrom": [
+      "src/**/*.{ts,tsx}",
+      "!src/**/*.d.ts",
+      "!src/test-utils/**/*",
+      "!src/**/*.stories.*"
+    ],
+    "coverageThreshold": {
+      "global": {
+        "branches": 70,
+        "functions": 70,
+        "lines": 70,
+        "statements": 70
+      }
+    }
   }
 }
