@@ -50,7 +50,7 @@ export async function generateMetadata({ params }: BenefitPageProps) {
 }
 
 export default async function BenefitPage({ params }: BenefitPageProps) {
-  const { benefit } = await params;
+  const { benefit } = params;
   const payments: Payment[] = paymentsData as Payment[];
   const payment = payments.find(p => p.id === benefit);
   

@@ -19,7 +19,7 @@ export async function generateStaticParams() {
 }
 
 export async function generateMetadata({ params }: CategoryPageProps) {
-  const { category } = await params;
+  const { category } = params;
   const categoryData = PAYMENT_CATEGORIES.find(cat => cat.id === category);
   
   if (!categoryData) {

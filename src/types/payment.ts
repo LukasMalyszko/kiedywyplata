@@ -32,7 +32,7 @@ export const PAYMENT_CATEGORIES: PaymentCategory[] = [
     id: 'pension',
     name: 'Emerytury i renty',
     description: 'ZUS, KRUS, 13. i 14. emerytura',
-    icon: '👴'
+    icon: '🛡️'
   },
   {
     id: 'benefits',
