@@ -20,6 +20,15 @@ const Footer = () => {
             >
               Katalog SEO
             </a>
+            <a
+              href="https://katalog.stronwww.eu/"
+              title="Katalog Stron WWW"
+              className="footer__link"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              Katalog Stron WWW
+            </a>
           </div>
         </div>
       </div>
