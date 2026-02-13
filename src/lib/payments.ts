@@ -1,4 +1,5 @@
 import { Payment } from '@/types/payment';
+import { toPreviousWorkingDay } from '@/lib/polish-working-days';
 
 const POLISH_MONTHS: Record<string, number> = {
   styczeń: 0, stycznia: 0,
@@ -45,11 +46,11 @@ function findPolishMonth(schedule: string): number | null {
 }
 
 export function getEffectiveNextPayment(payment: Payment, refDate = new Date()): string {
-  // If next_payment already in future, return it
+  // If next_payment already in future, return it (adjusted to working day)
   if (payment.next_payment) {
     const np = new Date(payment.next_payment);
     if (!isNaN(np.getTime()) && np >= startOfDay(refDate)) {
-      return np.toISOString();
+      return toWorkingDayISO(np);
     }
   }
 
@@ -63,14 +64,14 @@ export function getEffectiveNextPayment(payment: Payment, refDate = new Date()):
     const month = refDate.getMonth();
     for (const day of days) {
       const d = new Date(year, month, clampDay(year, month, day));
-      if (d >= startOfDay(refDate)) return d.toISOString();
+      if (d >= startOfDay(refDate)) return toWorkingDayISO(d);
     }
     // otherwise take earliest in next month
     const nextMonth = addMonths(new Date(year, month, 1), 1);
     const y2 = nextMonth.getFullYear();
     const m2 = nextMonth.getMonth();
     const d2 = new Date(y2, m2, clampDay(y2, m2, days[0]));
-    return d2.toISOString();
+    return toWorkingDayISO(d2);
   }
 
   // 2) If schedule mentions a month -> choose last day of that month in current or next year
@@ -78,9 +79,9 @@ export function getEffectiveNextPayment(payment: Payment, refDate = new Date()):
   if (monthNumber !== null) {
     const year = refDate.getFullYear();
     const candidate = new Date(year, monthNumber + 1, 0); // last day of month
-    if (candidate >= startOfDay(refDate)) return candidate.toISOString();
+    if (candidate >= startOfDay(refDate)) return toWorkingDayISO(candidate);
     const candidateNext = new Date(year + 1, monthNumber + 1, 0);
-    return candidateNext.toISOString();
+    return toWorkingDayISO(candidateNext);
   }
 
   // 3) If schedule contains words like "co miesiąc" or "miesiąc", assume same day-of-month as previous next_payment if valid, else use refDate + 1 month
@@ -93,12 +94,12 @@ export function getEffectiveNextPayment(payment: Payment, refDate = new Date()):
         while (candidate < startOfDay(refDate)) {
           candidate = addMonths(candidate, 1);
         }
-        return candidate.toISOString();
+        return toWorkingDayISO(candidate);
       }
     }
     // fallback: use first day of next month
     const next = addMonths(startOfDay(refDate), 1);
-    return new Date(next.getFullYear(), next.getMonth(), 1).toISOString();
+    return toWorkingDayISO(new Date(next.getFullYear(), next.getMonth(), 1));
   }
 
   // 4) Fallback: if next_payment exists but in past, increment month until in future
@@ -110,16 +111,25 @@ export function getEffectiveNextPayment(payment: Payment, refDate = new Date()):
       candidate = addMonths(candidate, 1);
       safety++;
     }
-    return candidate.toISOString();
+    return toWorkingDayISO(candidate);
   }
 
   // 5) Last fallback: tomorrow
   const tomorrow = new Date(startOfDay(refDate).getTime() + 24 * 60 * 60 * 1000);
-  return tomorrow.toISOString();
+  return toWorkingDayISO(tomorrow);
 }
 
 function startOfDay(d: Date) {
   return new Date(d.getFullYear(), d.getMonth(), d.getDate());
+}
+
+/** Returns ISO date (YYYY-MM-DD) for the actual payout date: when nominal date is non‑working (weekend/holiday), use previous working day (ZUS/Polish rule). */
+function toWorkingDayISO(d: Date): string {
+  const adj = toPreviousWorkingDay(d);
+  const y = adj.getFullYear();
+  const m = String(adj.getMonth() + 1).padStart(2, '0');
+  const day = String(adj.getDate()).padStart(2, '0');
+  return `${y}-${m}-${day}`;
 }
 
 export function daysUntil(dateISO: string, refDate = new Date()): number {
