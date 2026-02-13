@@ -52,6 +52,17 @@ Once connected, Vercel will automatically:
 - Run build checks and tests
 - Generate deployment URLs
 
+### GitHub Actions – Vercel preview deploys
+The CI workflow (`.github/workflows/ci.yml`) can deploy preview builds on pull requests using `amondnet/vercel-action`. To enable it, add these **repository secrets** in GitHub: **Settings → Secrets and variables → Actions**:
+
+| Secret             | Where to get it |
+|--------------------|------------------|
+| `VERCEL_TOKEN`     | [Vercel](https://vercel.com/account/tokens) → Account Settings → Tokens → Create |
+| `VERCEL_ORG_ID`    | Vercel project → Settings → General → “Organization ID” / Team ID (required; used for both org and scope) |
+| `VERCEL_PROJECT_ID`| Vercel project → Settings → General → “Project ID” |
+
+Without these secrets, the **test** job still runs (type-check, lint, build); only the **deploy-preview** step is skipped or fails. Deploy preview runs only for PRs from the same repository (not from forks).
+
 ### Build Settings
 The project uses these build settings (configured in `vercel.json`):
 - **Framework:** Next.js

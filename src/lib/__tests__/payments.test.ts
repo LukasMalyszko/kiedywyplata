@@ -15,9 +15,10 @@ describe('Payment Utilities', () => {
   };
 
   describe('getEffectiveNextPayment', () => {
-    test('should return future next_payment date as-is', () => {
+    test('should return future next_payment date as-is (YYYY-MM-DD, adjusted to working day when needed)', () => {
       const result = getEffectiveNextPayment(mockPayment, mockDate);
-      expect(result).toBe(new Date('2025-11-25').toISOString());
+      // 25 Nov 2025 is Tuesday (working day) – unchanged
+      expect(result).toBe('2025-11-25');
     });
 
     test('should calculate next monthly payment when current date passed', () => {
@@ -25,13 +26,20 @@ describe('Payment Utilities', () => {
         ...mockPayment,
         next_payment: '2025-10-25' // Past date
       };
-      
       const result = getEffectiveNextPayment(pastPayment, mockDate);
-      const resultDate = new Date(result);
-      
-      expect(resultDate.getDate()).toBe(25);
-      expect(resultDate.getMonth()).toBe(10); // November (0-indexed)
-      expect(resultDate > mockDate).toBe(true);
+      expect(result).toBe('2025-11-25'); // 25 Nov is Tuesday (working day)
+      expect(new Date(result) > mockDate).toBe(true);
+    });
+
+    test('should adjust to previous working day when nominal date is Sunday', () => {
+      // 10 Nov 2025 is Monday; 15 Nov 2025 is Saturday – ZUS pays on Friday 14th
+      const paymentWith15th: Payment = {
+        ...mockPayment,
+        next_payment: '',
+        schedule: '15. dnia każdego miesiąca'
+      };
+      const result = getEffectiveNextPayment(paymentWith15th, new Date('2025-11-01'));
+      expect(result).toBe('2025-11-14'); // Friday before Saturday 15th
     });
   });
 

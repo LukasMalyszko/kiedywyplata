@@ -31,6 +31,9 @@ export default function Header() {
             <Link href="/social" className="header__nav-link">
               Socjalne
             </Link>
+            <Link href="/calendar" className="header__nav-link">
+              Kalendarz
+            </Link>
           </nav>
           
           <div className="header__actions">

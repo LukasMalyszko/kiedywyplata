@@ -7,9 +7,7 @@ import paymentsData from '../../../../data/payments.json';
 import './page.scss';
 
 interface BenefitPageProps {
-  params: {
-    benefit: string;
-  };
+  params: Promise<{ benefit: string }>;
 }
 
 export async function generateStaticParams() {
@@ -20,7 +18,7 @@ export async function generateStaticParams() {
 }
 
 export async function generateMetadata({ params }: BenefitPageProps) {
-  const { benefit } = params;
+  const { benefit } = await params;
   const payments: Payment[] = paymentsData as Payment[];
   const payment = payments.find(p => p.id === benefit);
   
@@ -50,7 +48,7 @@ export async function generateMetadata({ params }: BenefitPageProps) {
 }
 
 export default async function BenefitPage({ params }: BenefitPageProps) {
-  const { benefit } = params;
+  const { benefit } = await params;
   const payments: Payment[] = paymentsData as Payment[];
   const payment = payments.find(p => p.id === benefit);
   
