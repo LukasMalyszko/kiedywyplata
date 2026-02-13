@@ -22,6 +22,21 @@
   --transition-fast: 0.15s ease;
   --transition-normal: 0.3s ease;
   --transition-slow: 0.5s ease;
+
+  // Fallbacks so body is visible before theme is applied (first paint / no-JS)
+  --color-text: #1a1a1a;
+  --color-background: #ffffff;
+  --color-primary: #0070f3;
+  --color-border: #e1e5e9;
+  --color-background-alt: #f8f9fa;
+  --color-text-light: #666666;
+  --color-hover-bg: rgba(0, 112, 243, 0.04);
+  --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.1);
+  --shadow-md: 0 4px 12px rgba(0, 0, 0, 0.08);
+  --shadow-lg: 0 8px 32px rgba(0, 0, 0, 0.12);
+  --color-background-elevated: #ffffff;
+  --color-focus-ring: rgba(0, 112, 243, 0.3);
+  --color-text-muted: #999999;
 }
 
 // Light Theme (Default)

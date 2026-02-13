@@ -1,0 +1,79 @@
+.calendar-page {
+  padding: var(--spacing-lg) 0 var(--spacing-xxl);
+}
+
+.calendar-page__header {
+  margin-bottom: var(--spacing-lg);
+}
+
+.calendar-page__breadcrumb {
+  display: inline-block;
+  font-size: var(--font-size-small);
+  color: var(--color-text-light);
+  text-decoration: none;
+  margin-bottom: var(--spacing-sm);
+
+  &:hover {
+    color: var(--color-primary);
+  }
+}
+
+.calendar-page__title {
+  font-size: var(--font-size-xxl);
+  font-weight: 700;
+  color: var(--color-text);
+  margin: 0 0 var(--spacing-sm);
+}
+
+.calendar-page__description {
+  font-size: var(--font-size-base);
+  color: var(--color-text-light);
+  margin: 0 0 var(--spacing-lg);
+  max-width: 560px;
+}
+
+.calendar-page__nav {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-md);
+  flex-wrap: wrap;
+}
+
+.calendar-page__nav-btn {
+  padding: var(--spacing-sm) var(--spacing-md);
+  border-radius: var(--border-radius-sm);
+  font-weight: 500;
+  font-size: var(--font-size-small);
+  text-decoration: none;
+  color: var(--color-primary);
+  background: var(--color-hover-bg);
+  transition: background var(--transition-fast), color var(--transition-fast);
+
+  &:hover {
+    background: var(--color-primary);
+    color: white;
+  }
+
+  &--disabled {
+    color: var(--color-text-muted);
+    background: var(--color-background-alt);
+    cursor: default;
+  }
+}
+
+.calendar-page__nav-current {
+  font-size: var(--font-size-large);
+  font-weight: 600;
+  color: var(--color-text);
+}
+
+.calendar-page__loading,
+.calendar-page__error {
+  padding: var(--spacing-xl);
+  text-align: center;
+  color: var(--color-text-light);
+}
+
+.calendar-page__error {
+  color: var(--color-error);
+}
