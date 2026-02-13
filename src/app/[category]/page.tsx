@@ -7,9 +7,7 @@ import { getEffectiveNextPayment } from '@/lib/payments';
 import './page.scss';
 
 interface CategoryPageProps {
-  params: {
-    category: string;
-  };
+  params: Promise<{ category: string }>;
 }
 
 export async function generateStaticParams() {
@@ -19,7 +17,7 @@ export async function generateStaticParams() {
 }
 
 export async function generateMetadata({ params }: CategoryPageProps) {
-  const { category } = params;
+  const { category } = await params;
   const categoryData = PAYMENT_CATEGORIES.find(cat => cat.id === category);
   
   if (!categoryData) {
