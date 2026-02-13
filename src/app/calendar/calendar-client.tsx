@@ -25,21 +25,34 @@ export default function CalendarClient() {
   const y = Number.isNaN(year) ? currentYear : year;
   const m = Number.isNaN(month) || month < 0 || month > 11 ? currentMonth : month;
 
+  const requestKey = `${y}-${m}`;
+  const [lastRequestKey, setLastRequestKey] = useState<string | null>(null);
   const [paymentsByDate, setPaymentsByDate] = useState<Record<string, Payment[]>>({});
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(false);
+  const [errorRequestKey, setErrorRequestKey] = useState<string | null>(null);
 
   useEffect(() => {
-    setLoading(true);
-    setError(false);
+    let cancelled = false;
     fetch(`/api/calendar?year=${y}&month=${m + 1}`)
       .then((res) => res.json())
       .then((data) => {
-        setPaymentsByDate(data.paymentsByDate ?? {});
+        if (!cancelled) {
+          setLastRequestKey(requestKey);
+          setPaymentsByDate(data.paymentsByDate ?? {});
+          setErrorRequestKey(null);
+        }
       })
-      .catch(() => setError(true))
-      .finally(() => setLoading(false));
-  }, [y, m]);
+      .catch(() => {
+        if (!cancelled) {
+          setErrorRequestKey(requestKey);
+        }
+      });
+    return () => {
+      cancelled = true;
+    };
+  }, [requestKey]);
+
+  const loading = lastRequestKey !== requestKey;
+  const error = errorRequestKey === requestKey;
 
   const earliestYear = currentMonth === 0 ? currentYear - 1 : currentYear;
   const earliestMonth = currentMonth === 0 ? 11 : currentMonth - 1;
