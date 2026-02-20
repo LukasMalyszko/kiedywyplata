@@ -73,6 +73,46 @@
     font-size: var(--font-size-small);
     margin-left: var(--spacing-xs);
   }
+
+  &__actions {
+    flex-shrink: 0;
+  }
+
+  &__share {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--spacing-xs);
+    padding: var(--spacing-sm) var(--spacing-md);
+    background: rgba(255, 255, 255, 0.2);
+    color: white;
+    border: 1px solid rgba(255, 255, 255, 0.4);
+    border-radius: var(--border-radius);
+    font-size: var(--font-size-small);
+    font-weight: 600;
+    cursor: pointer;
+    transition: background 0.2s, border-color 0.2s;
+
+    &:hover:not(:disabled) {
+      background: rgba(255, 255, 255, 0.3);
+      border-color: rgba(255, 255, 255, 0.6);
+    }
+
+    &:disabled {
+      opacity: 0.9;
+      cursor: default;
+    }
+  }
+
+  &__share-icon {
+    font-size: 1.1rem;
+    line-height: 1;
+  }
+
+  &__share-label {
+    @media (max-width: 480px) {
+      // Optional: show only icon on very small screens
+    }
+  }
 }
 
 @keyframes pulse {
