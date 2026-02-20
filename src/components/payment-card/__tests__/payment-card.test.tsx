@@ -4,6 +4,15 @@ import PaymentCard from '../payment-card';
 import { createMockPayment } from '@/test-utils/test-utils';
 
 describe('PaymentCard Component', () => {
+  beforeAll(() => {
+    jest.useFakeTimers();
+    jest.setSystemTime(new Date('2025-11-01T12:00:00Z'));
+  });
+
+  afterAll(() => {
+    jest.useRealTimers();
+  });
+
   const mockPayment = createMockPayment({
     name: '800+ Test',
     next_payment: '2025-11-25',
