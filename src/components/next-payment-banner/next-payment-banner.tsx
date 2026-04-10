@@ -3,6 +3,8 @@
 import { useState } from 'react';
 import { Payment } from '@/types/payment';
 import { getEffectiveNextPayment, daysUntil, getEligiblePayments } from '@/lib/payments';
+import { icons } from '@/icons';
+import CategoryIcon from '@/components/category-icon/category-icon';
 import './next-payment-banner.scss';
 
 interface NextPaymentBannerProps {
@@ -88,12 +90,18 @@ export default function NextPaymentBanner({ payments }: NextPaymentBannerProps) 
   const shareLabel =
     copyStatus === 'copied' ? 'Skopiowano!' : copyStatus === 'error' ? 'Błąd kopiowania' : 'Udostępnij';
 
+  const bannerIconSrc = isToday
+    ? icons.bannerToday
+    : isTomorrow
+      ? icons.bannerTomorrow
+      : icons.bannerUpcoming;
+
   return (
     <div className={`next-payment-banner ${isToday ? 'next-payment-banner--today' : ''}`}>
       <div className="container">
         <div className="next-payment-banner__content">
           <div className="next-payment-banner__icon">
-            {isToday ? '🎉' : isTomorrow ? '⏰' : '📅'}
+            <CategoryIcon icon={bannerIconSrc} imageClassName="next-payment-banner__icon-image" />
           </div>
           <div className="next-payment-banner__text">
             <h2 className="next-payment-banner__title">

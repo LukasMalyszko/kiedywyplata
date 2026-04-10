@@ -47,9 +47,23 @@
   &__icon {
     font-size: 4rem;
     flex-shrink: 0;
-    
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
     @media (max-width: 768px) {
       font-size: 3rem;
+    }
+  }
+
+  &__icon-image {
+    width: 4rem;
+    height: 4rem;
+    object-fit: contain;
+
+    @media (max-width: 768px) {
+      width: 3rem;
+      height: 3rem;
     }
   }
   
@@ -174,6 +188,15 @@
   &__other-icon {
     font-size: 1.5rem;
     flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  &__other-icon-image {
+    width: 1.5rem;
+    height: 1.5rem;
+    object-fit: contain;
   }
   
   &__other-info {
@@ -193,4 +216,9 @@
     color: var(--color-text-light);
     margin: 0;
   }
+}
+
+[data-theme="dark"] .category-page__icon-image,
+[data-theme="dark"] .category-page__other-icon-image {
+  filter: invert(1) brightness(1.08);
 }

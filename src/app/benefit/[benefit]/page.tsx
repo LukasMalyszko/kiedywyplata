@@ -2,6 +2,7 @@ import { notFound } from 'next/navigation';
 import Link from 'next/link';
 import PaymentCard from '@/components/payment-card/payment-card';
 import { Payment, PAYMENT_CATEGORIES } from '@/types/payment';
+import CategoryIcon from '@/components/category-icon/category-icon';
 import { getEffectiveNextPayment, daysUntil as computeDaysUntil } from '@/lib/payments';
 import paymentsData from '../../../../data/payments.json';
 import './page.scss';
@@ -101,7 +102,9 @@ export default async function BenefitPage({ params }: BenefitPageProps) {
           <div className="benefit-page__hero">
             {categoryData && (
               <div className="benefit-page__category">
-                <span className="benefit-page__category-icon">{categoryData.icon}</span>
+                <span className="benefit-page__category-icon">
+                  <CategoryIcon icon={categoryData.icon} imageClassName="benefit-page__category-icon-image" />
+                </span>
                 <span className="benefit-page__category-name">{categoryData.name}</span>
               </div>
             )}

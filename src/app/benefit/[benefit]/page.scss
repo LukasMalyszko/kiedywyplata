@@ -55,6 +55,14 @@
   
   &__category-icon {
     font-size: 1rem;
+    display: inline-flex;
+    align-items: center;
+  }
+
+  &__category-icon-image {
+    width: 1.125rem;
+    height: 1.125rem;
+    object-fit: contain;
   }
   
   &__title {
@@ -256,4 +264,8 @@
       justify-content: flex-start;
     }
   }
+}
+
+[data-theme="dark"] .benefit-page__category-icon-image {
+  filter: invert(1) brightness(1.08);
 }

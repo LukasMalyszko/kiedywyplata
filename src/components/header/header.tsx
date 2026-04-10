@@ -2,6 +2,7 @@
 
 import Link from 'next/link';
 import dynamic from 'next/dynamic';
+import { icons } from '@/icons';
 import './header.scss';
 
 // Dynamically import ThemeToggle to avoid hydration issues
@@ -14,7 +15,7 @@ export default function Header() {
       <div className="container">
         <div className="header__content">
           <Link href="/" className="header__logo">
-            <span className="header__logo-icon">💰</span>
+            <span className="header__logo-icon"><img src={icons.money} alt="Kiedy Wypłata logo" width={32} height={32} /></span>
             <span className="header__logo-text">Kiedy Wypłata</span>
           </Link>
           
