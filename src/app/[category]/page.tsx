@@ -2,6 +2,7 @@ import { notFound } from 'next/navigation';
 import Link from 'next/link';
 import PaymentCard from '@/components/payment-card/payment-card';
 import { Payment, PAYMENT_CATEGORIES } from '@/types/payment';
+import CategoryIcon from '@/components/category-icon/category-icon';
 import paymentsData from '../../../data/payments.json';
 import { getEffectiveNextPayment } from '@/lib/payments';
 import './page.scss';
@@ -77,7 +78,9 @@ export default async function CategoryPage({ params }: CategoryPageProps) {
           </div>
           
           <div className="category-page__hero">
-            <div className="category-page__icon">{categoryData.icon}</div>
+            <div className="category-page__icon">
+              <CategoryIcon icon={categoryData.icon} imageClassName="category-page__icon-image" />
+            </div>
             <div className="category-page__info">
               <h1 className="category-page__title">{categoryData.name}</h1>
               <p className="category-page__description">{categoryData.description}</p>
@@ -129,7 +132,9 @@ export default async function CategoryPage({ params }: CategoryPageProps) {
                   href={`/${categoryItem.id}`}
                   className="category-page__other-card"
                 >
-                  <span className="category-page__other-icon">{categoryItem.icon}</span>
+                  <span className="category-page__other-icon">
+                    <CategoryIcon icon={categoryItem.icon} imageClassName="category-page__other-icon-image" />
+                  </span>
                   <div className="category-page__other-info">
                     <h3 className="category-page__other-name">{categoryItem.name}</h3>
                     <p className="category-page__other-desc">{categoryItem.description}</p>

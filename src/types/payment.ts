@@ -1,3 +1,5 @@
+import { icons } from '@/icons';
+
 export interface Payment {
   id: string;
   name: string;
@@ -26,24 +28,24 @@ export const PAYMENT_CATEGORIES: PaymentCategory[] = [
     id: 'family',
     name: 'Świadczenia rodzinne',
     description: '800+, zasiłki rodzinne, Dobry Start, becikowe',
-    icon: '👨‍👩‍👧‍👦'
+    icon: icons.family,
   },
   {
     id: 'pension',
     name: 'Emerytury i renty',
     description: 'ZUS, KRUS, 13. i 14. emerytura',
-    icon: '🛡️'
+    icon: icons.guard,
   },
   {
     id: 'benefits',
     name: 'Zasiłki',
     description: 'Chorobowe, macierzyńskie, opiekuńcze, dla bezrobotnych, pielęgnacyjne',
-    icon: '🏥'
+    icon: icons.health,
   },
   {
     id: 'social',
     name: 'Świadczenia socjalne',
     description: 'Dodatki mieszkaniowe, węglowe, zasiłki stałe',
-    icon: '🏠'
+    icon: icons.home,
   }
 ];
