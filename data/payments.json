@@ -44,9 +44,9 @@
   {
     "id": "13-emerytura",
     "name": "13. emerytura",
-    "next_payment": "2025-04-30",
+    "next_payment": "2026-04-30",
     "schedule": "do końca kwietnia każdego roku",
-    "description": "Trzynasta emerytura wypłacana jest raz w roku, zwykle w kwietniu.",
+    "description": "W kwietniu 2026 r. Zakład Emerytalno – Rentowy MSWiA wypłaci 13. emeryturę osobom, które w dniu 31 marca 2026 r. posiadają prawo do świadczeń emerytalno – rentowych. Trzynasta emerytura zostanie wypłacona wraz z emeryturą lub rentą wypłacaną w kwietniowym terminie płatności.",
     "source": "https://www.zus.pl/",
     "category": "pension",
     "excludeFromNext": true
@@ -54,9 +54,9 @@
   {
     "id": "14-emerytura",
     "name": "14. emerytura",
-    "next_payment": "2025-09-30",
+    "next_payment": "2026-09-30",
     "schedule": "do końca września każdego roku",
-    "description": "Czternasta emerytura wypłacana jest raz w roku, zwykle we wrześniu.",
+    "description": "We wrześniu 2026 r. Zakład Emerytalno – Rentowy MSWiA wypłaci 14. emeryturę osobom, które w dniu 31 sierpnia 2026 r. posiadają prawo do świadczeń emerytalno – rentowych. Czternasta emerytura zostanie wypłacona wraz z emeryturą lub rentą wypłacaną we wrześniowym terminie płatności.",
     "source": "https://www.zus.pl/",
     "category": "pension",
     "excludeFromNext": true
