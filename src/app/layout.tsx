@@ -17,6 +17,10 @@ export const metadata: Metadata = {
   description: "Sprawdź terminy wypłat 800+, emerytur ZUS, zasiłków rodzinnych i innych świadczeń w Polsce. Aktualne daty wypłat na listopad 2025.",
   keywords: "wypłata 800+, emerytura ZUS, zasiłki rodzinne, świadczenia społeczne, terminy wypłat",
   robots: "index, follow",
+  icons: {
+    icon: "/icons/dolar.png",
+    apple: "/icons/dolar.png",
+  },
   openGraph: {
     title: "Kiedy Wypłata - Terminy wypłat świadczeń w Polsce",
     description: "Sprawdź terminy wypłat 800+, emerytur ZUS, zasiłków rodzinnych i innych świadczeń w Polsce.",
