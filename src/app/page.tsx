@@ -1,8 +1,13 @@
+import type { Metadata } from 'next';
 import dynamic from 'next/dynamic';
 import NextPaymentBanner from '@/components/next-payment-banner/next-payment-banner';
 import { Payment, PAYMENT_CATEGORIES } from '@/types/payment';
 import paymentsData from '../../data/payments.json';
 import './page.scss';
+
+export const metadata: Metadata = {
+  alternates: { canonical: '/' },
+};
 
 // Lazy load components that appear below the fold
 const PaymentCard = dynamic(() => import('@/components/payment-card/payment-card'), {

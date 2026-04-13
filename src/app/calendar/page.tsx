@@ -4,6 +4,7 @@ import CalendarClient from './calendar-client';
 export const metadata = {
   title: 'Kalendarz wypłat | Kiedy Wypłata',
   description: 'Kalendarz wypłat świadczeń w Polsce. Sprawdź, kiedy wypłacane są 800+, emerytury ZUS i inne świadczenia.',
+  alternates: { canonical: '/calendar' },
 };
 
 export default function CalendarPage() {

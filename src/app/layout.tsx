@@ -13,6 +13,7 @@ const inter = Inter({
 });
 
 export const metadata: Metadata = {
+  metadataBase: new URL("https://www.kiedywyplata.pl"),
   title: "Kiedy Wypłata - Terminy wypłat świadczeń w Polsce",
   description: "Sprawdź terminy wypłat 800+, emerytur ZUS, zasiłków rodzinnych i innych świadczeń w Polsce. Aktualne daty wypłat na listopad 2025.",
   keywords: "wypłata 800+, emerytura ZUS, zasiłki rodzinne, świadczenia społeczne, terminy wypłat",
@@ -49,7 +50,6 @@ export default function RootLayout({
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
         <link rel="dns-prefetch" href="https://pagead2.googlesyndication.com" />
-        <link rel="canonical" href="https://www.kiedywyplata.pl/" />
       </head>
       <body className={inter.variable} suppressHydrationWarning>
         <ThemeProvider>
