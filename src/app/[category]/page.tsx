@@ -31,6 +31,7 @@ export async function generateMetadata({ params }: CategoryPageProps) {
     title: `${categoryData.name} - Kiedy Wypłata`,
     description: `Sprawdź terminy wypłat dla kategorii: ${categoryData.description}. Aktualne daty wypłat w Polsce.`,
     keywords: `wypłata ${categoryData.name.toLowerCase()}, ${categoryData.description.toLowerCase()}, terminy wypłat`,
+    alternates: { canonical: `/${category}` },
     openGraph: {
       title: `${categoryData.name} - Kiedy Wypłata`,
       description: `Sprawdź terminy wypłat dla kategorii: ${categoryData.description}`,

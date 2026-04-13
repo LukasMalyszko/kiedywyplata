@@ -133,9 +133,15 @@ test.describe('Kiedy Wypłata E2E Tests', () => {
     const metaDescription = page.locator('meta[name="description"]');
     await expect(metaDescription).toHaveAttribute('content', /800\+.*ZUS.*zasiłk/);
 
-    // Check canonical link
+    // Check canonical link (must match this URL, not always homepage)
     const canonical = page.locator('link[rel="canonical"]');
     await expect(canonical).toHaveAttribute('href', 'https://www.kiedywyplata.pl/');
+  });
+
+  test('subpage canonical points to itself, not homepage', async ({ page }) => {
+    await page.goto('/benefits');
+    const canonical = page.locator('link[rel="canonical"]');
+    await expect(canonical).toHaveAttribute('href', 'https://www.kiedywyplata.pl/benefits');
   });
 
   test('should handle payment date calculations correctly', async ({ page }) => {

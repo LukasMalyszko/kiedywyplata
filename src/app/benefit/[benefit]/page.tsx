@@ -39,6 +39,7 @@ export async function generateMetadata({ params }: BenefitPageProps) {
     title: `${payment.name} - Kiedy Wypłata`,
     description: `${payment.description} Sprawdź termin wypłaty: ${effective.toLocaleDateString('pl-PL')}`,
     keywords: `wypłata ${payment.name.toLowerCase()}, ${payment.schedule.toLowerCase()}, terminy wypłat`,
+    alternates: { canonical: `/benefit/${benefit}` },
     openGraph: {
       title: `${payment.name} - Kiedy Wypłata`,
       description: payment.description,
