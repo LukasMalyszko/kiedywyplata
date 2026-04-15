@@ -99,12 +99,37 @@
   {
     "id": "dobry-start",
     "name": "Dobry Start (300+)",
-    "next_payment": "2025-08-31",
-    "schedule": "do 31 sierpnia każdego roku",
-    "description": "Świadczenie Dobry Start wypłacane jest raz w roku przed rozpoczęciem roku szkolnego.",
+    "next_payment": "2026-09-30",
+    "schedule": "Nabór wniosków: 1 lipca–30 listopada. Przy wniosku złożonym do końca sierpnia ZUS gwarantuje wypłatę 300 zł do 30 września (późniejsze wnioski: do 2 miesięcy od złożenia). Wnioski tylko elektronicznie, wypłata na rachunek bankowy.",
+    "description": "Na rok szkolny 2026/2027 nabór w ZUS trwa od 1 lipca do 30 listopada 2026 r. Przy wniosku do końca sierpnia 2026 r. świadczenie zostanie wypłacone najpóźniej do 30 września 2026 r. (zgodnie z komunikatami ZUS).",
     "source": "https://www.zus.pl/",
     "category": "family",
-    "excludeFromNext": true
+    "excludeFromNext": true,
+    "frequency": "yearly",
+    "institution": "ZUS",
+    "official_name": "Świadczenie z programu Dobry Start (300+)",
+    "yearly_snapshots": {
+      "2024": {
+        "school_year": "2024/2025",
+        "next_payment": "2024-09-30",
+        "summary": "Nabór 1.07–30.11.2024. Przy wniosku do końca sierpnia 2024 — wypłata do 30.09.2024."
+      },
+      "2025": {
+        "school_year": "2025/2026",
+        "next_payment": "2025-09-30",
+        "summary": "Nabór 1.07–30.11.2025. Przy wniosku do końca sierpnia 2025 — wypłata do 30.09.2025."
+      },
+      "2026": {
+        "school_year": "2026/2027",
+        "next_payment": "2026-09-30",
+        "summary": "Nabór 1.07–30.11.2026. Przy wniosku do końca sierpnia 2026 — wypłata do 30.09.2026."
+      },
+      "2027": {
+        "school_year": "2027/2028",
+        "next_payment": "2027-09-30",
+        "summary": "Plan (dotychczasowa reguła ZUS): nabór od 1.07.2027; przy wniosku do końca sierpnia 2027 — wypłata do 30.09.2027. Potwierdź termin w komunikacie ZUS na dany rok."
+      }
+    }
   },
   {
     "id": "dodatek-weglowy",

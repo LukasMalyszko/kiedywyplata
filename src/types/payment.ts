@@ -1,5 +1,12 @@
 import { icons } from '@/icons';
 
+/** Per-calendar-year campaign data (e.g. Dobry Start editions). */
+export interface PaymentYearSnapshot {
+  school_year: string;
+  next_payment: string;
+  summary?: string;
+}
+
 export interface Payment {
   id: string;
   name: string;
@@ -14,6 +21,8 @@ export interface Payment {
   detailed_schedule?: string; // Detailed schedule information
   assignment_method?: string; // How payment dates are assigned
   official_name?: string; // Full official name of the benefit
+  /** Year-keyed snapshots for annual programs (archives / planning). */
+  yearly_snapshots?: Record<string, PaymentYearSnapshot>;
 }
 
 export interface PaymentCategory {
