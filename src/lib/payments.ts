@@ -1,6 +1,11 @@
 import { Payment } from '@/types/payment';
 import { toPreviousWorkingDay } from '@/lib/polish-working-days';
 
+/** Years for which `/benefit/[id]/[year]/[month]` SEO pages are generated. */
+export const PROGRAMMATIC_SEO_YEAR_MIN = 2026;
+export const PROGRAMMATIC_SEO_YEAR_MAX = 2027;
+export const PROGRAMMATIC_SEO_YEARS = [2026, 2027] as const;
+
 const POLISH_MONTHS: Record<string, number> = {
   styczeń: 0, stycznia: 0,
   luty: 1, lutego: 1,
@@ -140,6 +145,93 @@ export function daysUntil(dateISO: string, refDate = new Date()): number {
 
 export function getEligiblePayments(payments: Payment[]): Payment[] {
   return payments.filter(p => !p.excludeFromNext);
+}
+
+/**
+ * ISO payout date(s) for this benefit in the given calendar month (`month` 1–12).
+ * Uses the same rules as the calendar (`getEffectiveNextPayment` + working-day adjustment).
+ * For `excludeFromNext` / yearly entries, uses `yearly_snapshots[year].next_payment` when set, else `next_payment`.
+ */
+export function getPayoutDatesForPaymentInMonth(
+  payment: Payment,
+  year: number,
+  month: number
+): string[] {
+  if (month < 1 || month > 12) return [];
+
+  const monthIndex = month - 1;
+
+  if (payment.excludeFromNext) {
+    let iso: string | undefined;
+    const snap = payment.yearly_snapshots?.[String(year)]?.next_payment;
+    if (snap) iso = snap.trim();
+    else if (payment.next_payment) iso = payment.next_payment.trim();
+    if (!iso || !/^\d{4}-\d{2}-\d{2}$/.test(iso)) return [];
+    const [py, pm, pd] = iso.split('-').map(Number);
+    if (py !== year || pm !== month) return [];
+    return [iso.slice(0, 10)];
+  }
+
+  const scheduleDays = parseNumbers(payment.schedule || '');
+  if (scheduleDays.length > 0) {
+    const seen = new Set<string>();
+    for (const day of scheduleDays) {
+      const nominal = new Date(year, monthIndex, clampDay(year, monthIndex, day));
+      if (nominal.getFullYear() !== year || nominal.getMonth() !== monthIndex) continue;
+      seen.add(toWorkingDayISO(nominal));
+    }
+    return [...seen].sort();
+  }
+
+  const monthEnd = new Date(year, monthIndex + 1, 0);
+  const seen = new Set<string>();
+  const result: string[] = [];
+  let ref = new Date(year, monthIndex, 1);
+  let iterations = 0;
+  const maxIterationsPerPayment = 40;
+  const paymentNoStickyNext: Payment = { ...payment, next_payment: '' };
+
+  while (ref <= monthEnd && iterations < maxIterationsPerPayment) {
+    iterations++;
+    try {
+      const nextDateStr = getEffectiveNextPayment(paymentNoStickyNext, ref);
+      if (!/^\d{4}-\d{2}-\d{2}$/.test(nextDateStr)) break;
+      const [y, m, d] = nextDateStr.split('-').map(Number);
+      const next = new Date(y, m - 1, d);
+      if (Number.isNaN(next.getTime())) break;
+      if (next.getFullYear() !== year || next.getMonth() !== monthIndex) break;
+      if (!seen.has(nextDateStr)) {
+        seen.add(nextDateStr);
+        result.push(nextDateStr);
+      }
+      ref = new Date(next.getTime() + 24 * 60 * 60 * 1000);
+    } catch {
+      break;
+    }
+  }
+
+  return result.sort();
+}
+
+/** Upcoming months (from the first day of the current month) within SEO year range that have at least one payout. */
+export function getUpcomingSeoMonthLinks(
+  payment: Payment,
+  maxLinks = 6
+): { year: number; month: number }[] {
+  const links: { year: number; month: number }[] = [];
+  const now = new Date();
+  const cutoff = new Date(now.getFullYear(), now.getMonth(), 1);
+
+  for (const year of PROGRAMMATIC_SEO_YEARS) {
+    for (let month = 1; month <= 12; month++) {
+      const first = new Date(year, month - 1, 1);
+      if (first < cutoff) continue;
+      if (getPayoutDatesForPaymentInMonth(payment, year, month).length === 0) continue;
+      links.push({ year, month });
+      if (links.length >= maxLinks) return links;
+    }
+  }
+  return links;
 }
 
 /** Returns map of date (YYYY-MM-DD) to payments that fall on that day in the given month. */

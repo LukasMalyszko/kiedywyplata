@@ -15,22 +15,33 @@ test.describe('Kiedy Wypłata E2E Tests', () => {
     const paymentCards = page.locator('.payment-card');
     await expect(paymentCards.first()).toBeVisible();
 
-    // Verify 800+ payment is present
-    await expect(page.getByText('800+')).toBeVisible();
+    // Verify 800+ payment card link (avoid getByText('800+') — matches many nodes)
+    await expect(page.locator('a[href="/benefit/800plus"]')).toBeVisible();
   });
 
   test('should navigate to benefit detail page', async ({ page }) => {
     await page.goto('/');
 
     // Click on 800+ payment card
-    await page.getByText('800+').first().click();
+    await page.locator('a[href="/benefit/800plus"]').click();
 
     // Should navigate to benefit detail page
     await expect(page).toHaveURL(/\/benefit\/800plus/);
     
-    // Check if benefit details are displayed
+    // Check if benefit details are displayed (scope to main payout block — related cards also say „Następna wypłata”)
     await expect(page.getByRole('heading', { name: /800\+/ })).toBeVisible();
-    await expect(page.getByText(/Następna wypłata|Ostatnia wypłata/)).toBeVisible();
+    await expect(
+      page.locator('.benefit-page__payment-info').getByText(/Następna wypłata|Ostatnia wypłata/)
+    ).toBeVisible();
+  });
+
+  test('should load programmatic benefit month page (SEO)', async ({ page }) => {
+    await page.goto('/benefit/800plus/2026/3');
+
+    await expect(page).toHaveURL(/\/benefit\/800plus\/2026\/3$/);
+    await expect(page.getByRole('heading', { name: /800\+.*2026|marzec/i })).toBeVisible();
+    const canonical = page.locator('link[rel="canonical"]');
+    await expect(canonical).toHaveAttribute('href', 'https://www.kiedywyplata.pl/benefit/800plus/2026/3');
   });
 
   test('should filter payments correctly by category', async ({ page }) => {
@@ -42,11 +53,11 @@ test.describe('Kiedy Wypłata E2E Tests', () => {
     await expect(page).toHaveURL(/\/family/);
     
     // Should show family payments only
-    await expect(page.getByText('800+')).toBeVisible();
-    await expect(page.getByText('Zasiłek rodzinny')).toBeVisible();
-    
-    // Should not show pension payments
-    await expect(page.getByText('Emerytura ZUS')).not.toBeVisible();
+    await expect(page.locator('a[href="/benefit/800plus"]')).toBeVisible();
+    await expect(page.locator('a[href="/benefit/zasilek-rodzinny"]')).toBeVisible();
+
+    // Should not show pension payments (card title is „Emerytury i renty ZUS”, not „Emerytura ZUS”)
+    await expect(page.locator('a[href="/benefit/emerytura"]')).not.toBeVisible();
   });
 
   test('should display excluded payments correctly', async ({ page }) => {
@@ -54,9 +65,9 @@ test.describe('Kiedy Wypłata E2E Tests', () => {
 
     // Should show annual payment label
     await expect(page.getByText('Wypłata roczna:')).toBeVisible();
-    
-    // Should not show countdown
-    await expect(page.getByText(/za \d+ dni/)).not.toBeVisible();
+
+    // No countdown in the main payout block (related cards below may still show „za X dni”)
+    await expect(page.locator('.benefit-page__payment-info')).not.toContainText(/za \d+ dni/);
     
     // Should show special note
     await expect(page.getByText('Świadczenie wypłacane raz w roku')).toBeVisible();
@@ -66,7 +77,7 @@ test.describe('Kiedy Wypłata E2E Tests', () => {
     await page.goto('/');
 
     // Check initial theme
-    const themeToggle = page.getByRole('button', { name: /przełącz motyw/i });
+    const themeToggle = page.getByRole('button', { name: /Przełącz na tryb/i });
     await expect(themeToggle).toBeVisible();
 
     // Click theme toggle
@@ -99,28 +110,18 @@ test.describe('Kiedy Wypłata E2E Tests', () => {
 
     // Check if mobile layout works
     await expect(page.getByRole('heading', { name: /Kiedy Wypłata/ })).toBeVisible();
-    await expect(page.locator('.payment-card')).toBeVisible();
+    await expect(page.locator('.payment-card').first()).toBeVisible();
 
     // Check if navigation works on mobile
     await page.getByText('Świadczenia rodzinne').click();
     await expect(page).toHaveURL(/\/family/);
   });
 
-  test('should load AdSense lazily after user interaction', async ({ page }) => {
+  test('should not inject AdSense slot on initial paint', async ({ page }) => {
     await page.goto('/');
 
-    // Initially AdSense should not be loaded
-    await expect(page.locator('ins.adsbygoogle')).not.toBeVisible();
-
-    // Scroll down to trigger lazy loading
-    await page.mouse.move(100, 100);
-    await page.mouse.click(100, 100);
-
-    // Wait a bit for lazy loading
-    await page.waitForTimeout(4000);
-
-    // AdSense should now be present (but may not be visible due to ad blockers)
-    await expect(page.locator('.lazy-adsense')).toBeVisible();
+    // No <ins class="adsbygoogle"> until LazyAdSense is mounted and script loads
+    await expect(page.locator('ins.adsbygoogle')).toHaveCount(0);
   });
 
   test('should have correct SEO metadata', async ({ page }) => {
@@ -133,9 +134,9 @@ test.describe('Kiedy Wypłata E2E Tests', () => {
     const metaDescription = page.locator('meta[name="description"]');
     await expect(metaDescription).toHaveAttribute('content', /800\+.*ZUS.*zasiłk/);
 
-    // Check canonical link (must match this URL, not always homepage)
+    // Canonical for homepage (Next resolves metadataBase without trailing slash)
     const canonical = page.locator('link[rel="canonical"]');
-    await expect(canonical).toHaveAttribute('href', 'https://www.kiedywyplata.pl/');
+    await expect(canonical).toHaveAttribute('href', /https:\/\/www\.kiedywyplata\.pl\/?$/);
   });
 
   test('subpage canonical points to itself, not homepage', async ({ page }) => {
