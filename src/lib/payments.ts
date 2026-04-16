@@ -172,17 +172,29 @@ export function getPayoutDatesForPaymentInMonth(
     return [iso.slice(0, 10)];
   }
 
+  const scheduleDays = parseNumbers(payment.schedule || '');
+  if (scheduleDays.length > 0) {
+    const seen = new Set<string>();
+    for (const day of scheduleDays) {
+      const nominal = new Date(year, monthIndex, clampDay(year, monthIndex, day));
+      if (nominal.getFullYear() !== year || nominal.getMonth() !== monthIndex) continue;
+      seen.add(toWorkingDayISO(nominal));
+    }
+    return [...seen].sort();
+  }
+
   const monthEnd = new Date(year, monthIndex + 1, 0);
   const seen = new Set<string>();
   const result: string[] = [];
   let ref = new Date(year, monthIndex, 1);
   let iterations = 0;
   const maxIterationsPerPayment = 40;
+  const paymentNoStickyNext: Payment = { ...payment, next_payment: '' };
 
   while (ref <= monthEnd && iterations < maxIterationsPerPayment) {
     iterations++;
     try {
-      const nextDateStr = getEffectiveNextPayment(payment, ref);
+      const nextDateStr = getEffectiveNextPayment(paymentNoStickyNext, ref);
       if (!/^\d{4}-\d{2}-\d{2}$/.test(nextDateStr)) break;
       const [y, m, d] = nextDateStr.split('-').map(Number);
       const next = new Date(y, m - 1, d);

@@ -116,6 +116,17 @@ describe('Payment Utilities', () => {
       expect(dates[0]).toMatch(/^\d{4}-\d{2}-\d{2}$/);
     });
 
+    test('returns every schedule day in month, not only next_payment', () => {
+      const p: Payment = {
+        ...mockPayment,
+        next_payment: '2026-03-10',
+        schedule: '2., 4., 7. dnia miesiąca',
+      };
+      const dates = getPayoutDatesForPaymentInMonth(p, 2026, 3);
+      expect(dates.length).toBe(3);
+      expect(dates.every((d) => /^\d{4}-\d{2}-\d{2}$/.test(d))).toBe(true);
+    });
+
     test('returns snapshot date for excludeFromNext with yearly_snapshots', () => {
       const p: Payment = {
         ...mockPayment,
