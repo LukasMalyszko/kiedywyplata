@@ -1,4 +1,10 @@
-import { getEffectiveNextPayment, daysUntil, getEligiblePayments } from '../payments';
+import {
+  getEffectiveNextPayment,
+  daysUntil,
+  getEligiblePayments,
+  getPayoutDatesForPaymentInMonth,
+  getUpcomingSeoMonthLinks,
+} from '../payments';
 import { Payment } from '@/types/payment';
 
 describe('Payment Utilities', () => {
@@ -95,6 +101,50 @@ describe('Payment Utilities', () => {
     test('should handle empty array', () => {
       const result = getEligiblePayments([]);
       expect(result).toEqual([]);
+    });
+  });
+
+  describe('getPayoutDatesForPaymentInMonth', () => {
+    test('returns at least one ISO date for monthly ZUS-style payment in a future month', () => {
+      const p: Payment = {
+        ...mockPayment,
+        next_payment: '',
+        schedule: '10. dnia miesiąca',
+      };
+      const dates = getPayoutDatesForPaymentInMonth(p, 2026, 6);
+      expect(dates.length).toBeGreaterThanOrEqual(1);
+      expect(dates[0]).toMatch(/^\d{4}-\d{2}-\d{2}$/);
+    });
+
+    test('returns snapshot date for excludeFromNext with yearly_snapshots', () => {
+      const p: Payment = {
+        ...mockPayment,
+        excludeFromNext: true,
+        next_payment: '',
+        yearly_snapshots: {
+          '2026': { school_year: '2026/2027', next_payment: '2026-09-30' },
+        },
+      };
+      expect(getPayoutDatesForPaymentInMonth(p, 2026, 9)).toEqual(['2026-09-30']);
+      expect(getPayoutDatesForPaymentInMonth(p, 2026, 8)).toEqual([]);
+    });
+  });
+
+  describe('getUpcomingSeoMonthLinks', () => {
+    test('lists only months from current month onward with payouts', () => {
+      const p: Payment = {
+        ...mockPayment,
+        next_payment: '',
+        schedule: '15. dnia miesiąca',
+      };
+      const links = getUpcomingSeoMonthLinks(p, 3);
+      expect(links.length).toBeGreaterThan(0);
+      const first = links[0];
+      const cutoff = new Date();
+      const firstDay = new Date(first.year, first.month - 1, 1);
+      expect(firstDay.getTime()).toBeGreaterThanOrEqual(
+        new Date(cutoff.getFullYear(), cutoff.getMonth(), 1).getTime()
+      );
     });
   });
 });

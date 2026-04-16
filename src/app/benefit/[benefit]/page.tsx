@@ -3,7 +3,7 @@ import Link from 'next/link';
 import PaymentCard from '@/components/payment-card/payment-card';
 import { Payment, PAYMENT_CATEGORIES } from '@/types/payment';
 import CategoryIcon from '@/components/category-icon/category-icon';
-import { getEffectiveNextPayment, daysUntil as computeDaysUntil } from '@/lib/payments';
+import { getEffectiveNextPayment, daysUntil as computeDaysUntil, getUpcomingSeoMonthLinks } from '@/lib/payments';
 import paymentsData from '../../../../data/payments.json';
 import './page.scss';
 
@@ -81,6 +81,7 @@ export default async function BenefitPage({ params }: BenefitPageProps) {
   const daysUntil = computeDaysUntil(effectiveISO, today);
   const isUpcoming = daysUntil >= 0 && daysUntil <= 7;
   const isPast = daysUntil < 0;
+  const monthLinks = getUpcomingSeoMonthLinks(payment, 8);
 
   return (
     <div className="benefit-page">
@@ -149,6 +150,31 @@ export default async function BenefitPage({ params }: BenefitPageProps) {
               <p className="benefit-page__schedule-text">{payment.schedule}</p>
             </div>
           </div>
+
+          {monthLinks.length > 0 && (
+            <nav className="benefit-page__month-links" aria-label="Nadchodzące wypłaty wg miesięcy">
+              <h2 className="benefit-page__month-links-title">Nadchodzące terminy (2026–2027)</h2>
+              <ul className="benefit-page__month-links-list">
+                {monthLinks.map(({ year, month }) => {
+                  const label = new Date(year, month - 1, 1).toLocaleDateString('pl-PL', {
+                    month: 'long',
+                    year: 'numeric',
+                  });
+                  const cap = label.charAt(0).toUpperCase() + label.slice(1);
+                  return (
+                    <li key={`${year}-${month}`} className="benefit-page__month-links-item">
+                      <Link
+                        href={`/benefit/${benefit}/${year}/${month}`}
+                        className="benefit-page__month-links-link"
+                      >
+                        {cap}
+                      </Link>
+                    </li>
+                  );
+                })}
+              </ul>
+            </nav>
+          )}
         </header>
 
         <section className="benefit-page__details">
