@@ -1,6 +1,9 @@
 import { notFound } from 'next/navigation';
 import Link from 'next/link';
+import dynamic from 'next/dynamic';
 import PaymentCard from '@/components/payment-card/payment-card';
+
+const AddToCalendar = dynamic(() => import('@/components/add-to-calendar/add-to-calendar'));
 import { Payment, PAYMENT_CATEGORIES } from '@/types/payment';
 import CategoryIcon from '@/components/category-icon/category-icon';
 import { getEffectiveNextPayment, daysUntil as computeDaysUntil, getUpcomingSeoMonthLinks } from '@/lib/payments';
@@ -149,6 +152,10 @@ export default async function BenefitPage({ params }: BenefitPageProps) {
               <h3 className="benefit-page__schedule-title">Harmonogram wypłat:</h3>
               <p className="benefit-page__schedule-text">{payment.schedule}</p>
             </div>
+
+            {payment.next_payment !== '' && (
+              <AddToCalendar payment={payment} nextPaymentISO={effectiveISO} />
+            )}
           </div>
 
           {monthLinks.length > 0 && (

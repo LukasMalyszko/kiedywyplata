@@ -1,0 +1,88 @@
+.add-to-calendar {
+  position: relative;
+  display: inline-block;
+  margin-top: var(--spacing-md);
+
+  &__trigger {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--spacing-xs);
+    padding: var(--spacing-sm) var(--spacing-md);
+    background: var(--color-primary);
+    color: #fff;
+    border: none;
+    border-radius: var(--border-radius);
+    font-size: var(--font-size-base);
+    font-weight: 600;
+    cursor: pointer;
+    transition: background 0.2s ease, transform 0.1s ease;
+
+    &:hover {
+      background: var(--color-primary-hover, var(--color-primary));
+      filter: brightness(0.9);
+    }
+
+    &:active {
+      transform: scale(0.98);
+    }
+
+    &:focus-visible {
+      outline: 2px solid var(--color-primary);
+      outline-offset: 2px;
+    }
+  }
+
+  &__dropdown {
+    position: absolute;
+    top: calc(100% + var(--spacing-xs));
+    left: 0;
+    z-index: 100;
+    min-width: 240px;
+    background: var(--color-background);
+    border: 1px solid var(--color-border, #e2e8f0);
+    border-radius: var(--border-radius);
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.12);
+    overflow: hidden;
+  }
+
+  &__option {
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-sm);
+    padding: var(--spacing-sm) var(--spacing-md);
+    color: var(--color-text);
+    text-decoration: none;
+    transition: background 0.15s ease;
+    cursor: pointer;
+
+    &:not(:last-child) {
+      border-bottom: 1px solid var(--color-border, #e2e8f0);
+    }
+
+    &:hover {
+      background: var(--color-background-light);
+    }
+
+    span:not(.add-to-calendar__option-icon) {
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+
+      strong {
+        font-size: var(--font-size-base);
+        font-weight: 600;
+        line-height: 1.2;
+      }
+
+      small {
+        font-size: var(--font-size-small, 0.75rem);
+        color: var(--color-text-light);
+      }
+    }
+  }
+
+  &__option-icon {
+    font-size: 1.25rem;
+    flex-shrink: 0;
+  }
+}
