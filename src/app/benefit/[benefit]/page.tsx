@@ -85,6 +85,7 @@ export default async function BenefitPage({ params }: BenefitPageProps) {
   const isUpcoming = daysUntil >= 0 && daysUntil <= 7;
   const isPast = daysUntil < 0;
   const monthLinks = getUpcomingSeoMonthLinks(payment, 8);
+  const showPoliceHousingInfoTile = payment.id === 'dodatek-mieszkaniowy';
 
   return (
     <div className="benefit-page">
@@ -207,6 +208,42 @@ export default async function BenefitPage({ params }: BenefitPageProps) {
                 Oficjalna strona →
               </a>
             </div>
+
+            {showPoliceHousingInfoTile && (
+              <div className="benefit-page__info-card">
+                <h3 className="benefit-page__info-title">👮 Mieszkaniówka w Policji (2026)</h3>
+                <p className="benefit-page__info-text">
+                  Dodatek mieszkaniowy dla policjantów w 2026 roku jest wypłacany po złożeniu wniosku.
+                  Środki trafiają na konto funkcjonariusza w terminie ustalonym przez jednostkę kadrową,
+                  zwykle w cyklu miesięcznym.
+                </p>
+                <p className="benefit-page__info-text">
+                  Świadczenie przysługuje policjantom, którzy nie korzystają z lokalu służbowego lub internatu.
+                  Kwota wynosi od 900 do 1800 zł miesięcznie (zależnie od miejsca służby). Wniosek można
+                  złożyć papierowo lub elektronicznie (profil zaufany / podpis kwalifikowany).
+                </p>
+                <p className="benefit-page__info-text">
+                  Wypłaty realizowane są miesięcznie. Świadczenie przyznane po złożeniu wniosku jest wypłacane
+                  od dnia jego złożenia. Przy zachowaniu terminu złożenia możliwe jest wyrównanie od 1 lipca 2025 r.
+                </p>
+                <a
+                  href="https://www.gov.pl/web/mswia/swiadczenie-mieszkaniowe-do-1800-zl-wkrotce-trafi-do-funkcjonariuszy"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="benefit-page__source-link"
+                >
+                  Źródło: MSWiA (gov.pl) →
+                </a>
+                <a
+                  href="https://specbrands.pl/mieszkaniowka-dla-policji-kiedy-bedzie-wyplacane-swiadczenie-mieszkaniowe-dla-funkcjonariuszy/"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="benefit-page__source-link"
+                >
+                  Źródło: SpecBrands.pl →
+                </a>
+              </div>
+            )}
           </div>
         </section>
 
