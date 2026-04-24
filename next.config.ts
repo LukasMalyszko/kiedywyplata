@@ -24,6 +24,32 @@ const nextConfig: NextConfig = {
   
   // Turbopack configuration (empty to silence warnings)
   turbopack: {},
+
+  // SEO keyword aliases that point to the canonical housing-benefit page
+  async redirects() {
+    return [
+      {
+        source: '/kiedy-wyplata-mieszkaniowki-w-policji',
+        destination: '/benefit/dodatek-mieszkaniowy',
+        permanent: true,
+      },
+      {
+        source: '/dodatek-mieszkaniowy-policja-kiedy-wyplata-2026',
+        destination: '/benefit/dodatek-mieszkaniowy',
+        permanent: true,
+      },
+      {
+        source: '/benefit/kiedy-wyplata-mieszkaniowki-w-policji',
+        destination: '/benefit/dodatek-mieszkaniowy',
+        permanent: true,
+      },
+      {
+        source: '/benefit/dodatek-mieszkaniowy-policja-kiedy-wyplata-2026',
+        destination: '/benefit/dodatek-mieszkaniowy',
+        permanent: true,
+      },
+    ];
+  },
 };
 
 export default nextConfig;
