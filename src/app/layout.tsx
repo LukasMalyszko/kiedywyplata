@@ -19,8 +19,8 @@ export const metadata: Metadata = {
   keywords: "wypłata 800+, emerytura ZUS, zasiłki rodzinne, świadczenia społeczne, terminy wypłat",
   robots: "index, follow",
   icons: {
-    icon: "/icons/dolar.png",
-    apple: "/icons/dolar.png",
+    icon: "/favicon.ico",
+    apple: "/favicon.ico",
   },
   openGraph: {
     title: "Kiedy Wypłata - Terminy wypłat świadczeń w Polsce",
