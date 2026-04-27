@@ -44,7 +44,7 @@ export const FAQ_ITEMS: FAQItem[] = [
       '• Liczby lat pracy i wpłaconych składek\n' +
       '• Wysokości zarobków w ciągu kariery\n' +
       '• Wieku przejścia na emeryturę\n\n' +
-      'Bieżące wysokości emerytur różnią się indywidualnie. Średnia emerytura w Polsce wynosi około 2800-3000 złotych. Aby dowiedzieć się dokładnej kwoty, należy złożyć wniosek w oddziale ZUS.',
+      'Bieżące wysokości emerytur różnią się indywidualnie. Średnia emerytura w Polsce wynosi około 4200-4300 zł brutto. Aby dowiedzieć się dokładnej kwoty, należy złożyć wniosek w oddziale ZUS.',
     category: 'pension',
   },
   {
@@ -52,7 +52,7 @@ export const FAQ_ITEMS: FAQItem[] = [
     question: 'Jakie są warunki do emerytury?',
     answer:
       'Aby przejść na emeryturę, musisz spełnić:\n' +
-      '• Wiek emerytalny (aktualnie 67 lat dla obu płci w Polsce)\n' +
+      '• Wiek emerytalny (60 lat dla kobiet i 65 lat dla mężczyzn)\n' +
       '• Co najmniej 15 lat ubezpieczenia emerytalnego\n' +
       '• Zrezygnować z pracy na pełny etat\n\n' +
       'Niektóre grupy zawodowe mają uprawnienia emerytalne na niższych warunkach. Możesz również skorzystać z emerytury częściowej lub pracować po osiągnięciu wieku emerytalnego.',
@@ -76,7 +76,7 @@ export const FAQ_ITEMS: FAQItem[] = [
       'Większość świadczeń jest wypłacana na konto bankowe podane we wniosku. Można również wybrać:\n' +
       '• Wypłatę w placówce pocztowej\n' +
       '• Gotówkę w placówce Poczty Polskiej\n\n' +
-      'Transfers są zwykle realizowane w ciągu 1-3 dni roboczych od daty oficjalnej wypłaty.',
+      'Transfery są zwykle realizowane w ciągu 1-3 dni roboczych od daty oficjalnej wypłaty.',
     category: 'benefits',
   },
   {
