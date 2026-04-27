@@ -201,6 +201,9 @@ export default async function BenefitMonthPage({ params }: BenefitMonthPageProps
             <Link href={`/benefit/${benefit}`} className="button button--secondary">
               ← Pełny opis: {payment.name}
             </Link>
+            <Link href="/#faq" className="button button--secondary">
+              ❓ Masz pytania? Sprawdź FAQ
+            </Link>
             <Link href="/calendar" className="button button--primary">
               Kalendarz wypłat
             </Link>
