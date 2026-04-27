@@ -29,6 +29,17 @@ const nextConfig: NextConfig = {
   async redirects() {
     return [
       {
+        source: '/:path*',
+        has: [
+          {
+            type: 'host',
+            value: 'kiedywyplata.pl',
+          },
+        ],
+        destination: 'https://www.kiedywyplata.pl/:path*',
+        permanent: true,
+      },
+      {
         source: '/kiedy-wyplata-mieszkaniowki-w-policji',
         destination: '/benefit/dodatek-mieszkaniowy',
         permanent: true,

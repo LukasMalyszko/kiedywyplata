@@ -71,12 +71,12 @@ export function generateICS(payment: Payment, dates: Date[]): string {
   const description = escapeICSText(
     `${payment.description}\n\nHarmonogram: ${payment.schedule}\n\nŹródło: ${payment.source}`
   );
-  const url = `https://kiedywyplata.pl/benefit/${payment.id}`;
+  const url = `https://www.kiedywyplata.pl/benefit/${payment.id}`;
 
   const events = dates.map((date, idx) => {
     const dtStart = toICSDate(date);
     const dtEnd = toICSDate(addOneDay(date));
-    const uid = `${payment.id}-${dtStart}-${idx}@kiedywyplata.pl`;
+    const uid = `${payment.id}-${dtStart}-${idx}@www.kiedywyplata.pl`;
 
     return [
       'BEGIN:VEVENT',
@@ -118,7 +118,7 @@ export function buildGoogleCalendarUrl(payment: Payment, date: Date): string {
     text: `Wypłata: ${payment.name}`,
     dates: `${dtStart}/${dtEnd}`,
     details: `${payment.description}\n\nHarmonogram: ${payment.schedule}`,
-    sprop: `website:https://kiedywyplata.pl`,
+    sprop: `website:https://www.kiedywyplata.pl`,
   });
   return `https://calendar.google.com/calendar/render?${params.toString()}`;
 }
