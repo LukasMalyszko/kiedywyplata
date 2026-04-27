@@ -1,7 +1,9 @@
 import type { Metadata } from 'next';
 import dynamic from 'next/dynamic';
 import NextPaymentBanner from '@/components/next-payment-banner/next-payment-banner';
+import FAQ from '@/components/faq/faq';
 import { Payment, PAYMENT_CATEGORIES } from '@/types/payment';
+import { FAQ_ITEMS } from '@/data/faq';
 import paymentsData from '../../data/payments.json';
 import './page.scss';
 
@@ -61,6 +63,8 @@ export default function Home() {
             </ul>
           </div>
         </section>
+
+        <FAQ items={FAQ_ITEMS} title="Często Zadawane Pytania" />
       </div>
     </div>
   );

@@ -263,6 +263,9 @@ export default async function BenefitPage({ params }: BenefitPageProps) {
             <Link href="/" className="button button--secondary">
               ← Powrót do strony głównej
             </Link>
+            <Link href="/#faq" className="button button--secondary">
+              ❓ Masz pytania? Sprawdź FAQ
+            </Link>
             {categoryData && (
               <Link href={`/${payment.category}`} className="button button--primary">
                 Zobacz wszystkie: {categoryData.name}
