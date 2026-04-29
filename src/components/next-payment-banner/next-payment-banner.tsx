@@ -2,7 +2,7 @@
 
 import { useState } from 'react';
 import { Payment } from '@/types/payment';
-import { getEffectiveNextPayment, daysUntil, getEligiblePayments } from '@/lib/payments';
+import { getEffectiveNextPayment, daysUntil, getEligiblePayments, getMonthlyShiftChanges } from '@/lib/payments';
 import { icons } from '@/icons';
 import CategoryIcon from '@/components/category-icon/category-icon';
 import './next-payment-banner.scss';
@@ -38,7 +38,18 @@ export default function NextPaymentBanner({ payments }: NextPaymentBannerProps) 
 
   const getDaysUntilPayment = (dateString: string) => daysUntil(dateString);
 
+  const formatShortDate = (dateString: string) => {
+    const date = new Date(dateString);
+    return date.toLocaleDateString('pl-PL', {
+      day: '2-digit',
+      month: 'short'
+    });
+  };
+
   const nextPayment = getNextPayment();
+  const today = new Date();
+  const currentMonthLabel = today.toLocaleDateString('pl-PL', { month: 'long' });
+  const monthlyChanges = getMonthlyShiftChanges(payments, today.getFullYear(), today.getMonth() + 1).slice(0, 4);
 
   const handleShare = async () => {
     if (!nextPayment) return;
@@ -128,6 +139,23 @@ export default function NextPaymentBanner({ payments }: NextPaymentBannerProps) 
               <span className="next-payment-banner__share-label">{shareLabel}</span>
             </button>
           </div>
+        </div>
+
+        <div className="next-payment-banner__changes" aria-live="polite">
+          <p className="next-payment-banner__changes-title">
+            Zmiany w tym miesiącu ({currentMonthLabel})
+          </p>
+          {monthlyChanges.length > 0 ? (
+            <ul className="next-payment-banner__changes-list">
+              {monthlyChanges.map((change) => (
+                <li key={`${change.paymentId}-${change.nominalISO}`} className="next-payment-banner__changes-item">
+                  <strong>{change.paymentName}</strong>: {formatShortDate(change.nominalISO)} → {formatShortDate(change.effectiveISO)}
+                </li>
+              ))}
+            </ul>
+          ) : (
+            <p className="next-payment-banner__changes-empty">Brak przesunięć terminów wypłat w tym miesiącu.</p>
+          )}
         </div>
       </div>
     </div>

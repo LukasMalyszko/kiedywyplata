@@ -128,6 +128,13 @@ function startOfDay(d: Date) {
   return new Date(d.getFullYear(), d.getMonth(), d.getDate());
 }
 
+function toISODate(d: Date): string {
+  const y = d.getFullYear();
+  const m = String(d.getMonth() + 1).padStart(2, '0');
+  const day = String(d.getDate()).padStart(2, '0');
+  return `${y}-${m}-${day}`;
+}
+
 /** Returns ISO date (YYYY-MM-DD) for the actual payout date: when nominal date is non‑working (weekend/holiday), use previous working day (ZUS/Polish rule). */
 function toWorkingDayISO(d: Date): string {
   const adj = toPreviousWorkingDay(d);
@@ -167,7 +174,7 @@ export function getPayoutDatesForPaymentInMonth(
     if (snap) iso = snap.trim();
     else if (payment.next_payment) iso = payment.next_payment.trim();
     if (!iso || !/^\d{4}-\d{2}-\d{2}$/.test(iso)) return [];
-    const [py, pm, pd] = iso.split('-').map(Number);
+    const [py, pm] = iso.split('-').map(Number);
     if (py !== year || pm !== month) return [];
     return [iso.slice(0, 10)];
   }
@@ -264,4 +271,126 @@ export function getPaymentsByDateInMonth(
     }
   }
   return result;
+}
+
+export interface MonthlyShiftChange {
+  paymentId: string;
+  paymentName: string;
+  nominalISO: string;
+  effectiveISO: string;
+}
+
+export interface MonthPayoutSummary {
+  totalPayouts: number;
+  activeBenefits: number;
+}
+
+export interface PaymentMonthComparison {
+  paymentId: string;
+  paymentName: string;
+  leftDates: string[];
+  rightDates: string[];
+}
+
+/**
+ * Payouts in the selected month that shift to a different working day.
+ * Excludes one-time/yearly benefits (`excludeFromNext`), which intentionally
+ * use raw snapshot/`next_payment` dates in payout views without working-day adjustment.
+ */
+export function getMonthlyShiftChanges(
+  payments: Payment[],
+  year: number,
+  month: number
+): MonthlyShiftChange[] {
+  if (month < 1 || month > 12) return [];
+
+  const monthIndex = month - 1;
+  const changes: MonthlyShiftChange[] = [];
+  const seen = new Set<string>();
+
+  const addIfShifted = (payment: Payment, nominal: Date) => {
+    if (nominal.getFullYear() !== year || nominal.getMonth() !== monthIndex) return;
+    const nominalISO = toISODate(nominal);
+    const effectiveISO = toWorkingDayISO(nominal);
+    if (nominalISO === effectiveISO) return;
+    const key = `${payment.id}:${nominalISO}`;
+    if (seen.has(key)) return;
+    seen.add(key);
+    changes.push({
+      paymentId: payment.id,
+      paymentName: payment.name,
+      nominalISO,
+      effectiveISO,
+    });
+  };
+
+  for (const payment of payments) {
+    if (payment.excludeFromNext) continue;
+
+    const scheduleDays = parseNumbers(payment.schedule || '');
+    if (scheduleDays.length > 0) {
+      for (const day of scheduleDays) {
+        const nominal = new Date(year, monthIndex, clampDay(year, monthIndex, day));
+        addIfShifted(payment, nominal);
+      }
+      continue;
+    }
+
+    if (!payment.next_payment) continue;
+    const nominal = new Date(payment.next_payment);
+    if (Number.isNaN(nominal.getTime())) continue;
+    addIfShifted(payment, nominal);
+  }
+
+  return changes.sort((a, b) => {
+    if (a.effectiveISO === b.effectiveISO) return a.paymentName.localeCompare(b.paymentName, 'pl');
+    return a.effectiveISO.localeCompare(b.effectiveISO);
+  });
+}
+
+/** Summary stats for all payouts scheduled in a calendar month (`month` 1–12). */
+export function getMonthPayoutSummary(
+  payments: Payment[],
+  year: number,
+  month: number
+): MonthPayoutSummary {
+  let totalPayouts = 0;
+  let activeBenefits = 0;
+
+  for (const payment of payments) {
+    const dates = getPayoutDatesForPaymentInMonth(payment, year, month);
+    totalPayouts += dates.length;
+    if (dates.length > 0) activeBenefits++;
+  }
+
+  return { totalPayouts, activeBenefits };
+}
+
+/** Date-by-date benefit changes between two months (`month` values 1–12). */
+export function getMonthComparison(
+  payments: Payment[],
+  left: { year: number; month: number },
+  right: { year: number; month: number }
+): PaymentMonthComparison[] {
+  const result: PaymentMonthComparison[] = [];
+
+  const dayPattern = (dates: string[]) => dates.map((iso) => iso.slice(-2)).join('|');
+
+  for (const payment of payments) {
+    const leftDates = getPayoutDatesForPaymentInMonth(payment, left.year, left.month);
+    const rightDates = getPayoutDatesForPaymentInMonth(payment, right.year, right.month);
+    const leftKey = dayPattern(leftDates);
+    const rightKey = dayPattern(rightDates);
+
+    if (leftKey === rightKey) continue;
+
+    result.push({
+      paymentId: payment.id,
+      paymentName: payment.name,
+      leftDates,
+      rightDates,
+    });
+  }
+
+  return result.sort((a, b) => a.paymentName.localeCompare(b.paymentName, 'pl'));
 }

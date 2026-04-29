@@ -12,7 +12,7 @@ export const metadata: Metadata = {
 };
 
 // Lazy load components that appear below the fold
-const PaymentCard = dynamic(() => import('@/components/payment-card/payment-card'), {
+const PaymentsExplorer = dynamic(() => import('@/components/payments-explorer/payments-explorer'), {
   loading: () => <div style={{height: '200px', background: '#f8f9fa', borderRadius: '8px', animation: 'pulse 1.5s ease-in-out infinite'}} />,
 });
 
@@ -44,12 +44,7 @@ export default function Home() {
         </section>
 
         <section className="home-page__all-payments">
-          <h2 className="home-page__section-title">Wszystkie świadczenia</h2>
-          <div className="home-page__payments-grid">
-            {payments.map((payment) => (
-              <PaymentCard key={payment.id} payment={payment} linkToDetail={true} />
-            ))}
-          </div>
+          <PaymentsExplorer payments={payments} />
         </section>
 
         <section className="home-page__info">
