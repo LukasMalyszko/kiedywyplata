@@ -67,14 +67,14 @@ describe('PaymentCard Component', () => {
     expect(screen.getByText('Jednorazowa wypłata:')).toBeInTheDocument();
   });
 
-  it('renders as link when linkToDetail is true', () => {
+  it('renders title as link when linkToDetail is true', () => {
     render(<PaymentCard payment={mockPayment} linkToDetail={true} />);
     
-    const linkElement = screen.getByRole('link');
+    const linkElement = screen.getByRole('link', { name: '800+ Test' });
     expect(linkElement).toHaveAttribute('href', '/benefit/test-payment');
   });
 
-  it('does not render as link when linkToDetail is false', () => {
+  it('does not render title as link when linkToDetail is false', () => {
     render(<PaymentCard payment={mockPayment} linkToDetail={false} />);
     
     expect(screen.queryByRole('link')).not.toBeInTheDocument();

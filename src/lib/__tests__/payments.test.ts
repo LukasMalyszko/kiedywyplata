@@ -194,6 +194,20 @@ describe('Payment Utilities', () => {
       const changes = getMonthlyShiftChanges([p], 2025, 11);
       expect(changes).toEqual([]);
     });
+
+    test('skips excludeFromNext benefits to keep raw-date behavior consistent', () => {
+      const excluded: Payment = {
+        ...mockPayment,
+        id: 'excluded-on-weekend',
+        name: 'Excluded Benefit',
+        excludeFromNext: true,
+        schedule: '',
+        next_payment: '2025-11-15',
+      };
+
+      const changes = getMonthlyShiftChanges([excluded], 2025, 11);
+      expect(changes).toEqual([]);
+    });
   });
 
   describe('getMonthPayoutSummary', () => {

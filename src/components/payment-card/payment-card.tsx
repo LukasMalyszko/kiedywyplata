@@ -42,7 +42,15 @@ export default function PaymentCard({
     <div className={`payment-card ${isUpcoming ? 'payment-card--upcoming' : ''} ${isPast ? 'payment-card--past' : ''}`}>
       <div className="payment-card__header">
         <div className="payment-card__title-row">
-          <h3 className="payment-card__title">{payment.name}</h3>
+          <h3 className="payment-card__title">
+            {linkToDetail ? (
+              <Link href={`/benefit/${payment.id}`} className="payment-card__title-link">
+                {payment.name}
+              </Link>
+            ) : (
+              payment.name
+            )}
+          </h3>
           {onToggleFavorite && (
             <button
               type="button"
@@ -100,14 +108,6 @@ export default function PaymentCard({
       </div>
     </div>
   );
-
-  if (linkToDetail) {
-    return (
-      <Link href={`/benefit/${payment.id}`} className="payment-card-link">
-        {cardContent}
-      </Link>
-    );
-  }
 
   return cardContent;
 }

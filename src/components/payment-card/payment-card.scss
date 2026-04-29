@@ -44,6 +44,22 @@
     margin-bottom: var(--spacing-sm);
   }
 
+  &__title-link {
+    color: inherit;
+    text-decoration: none;
+
+    &:hover {
+      color: var(--color-primary);
+      text-decoration: underline;
+    }
+
+    &:focus {
+      outline: 2px solid var(--color-primary);
+      outline-offset: 2px;
+      border-radius: var(--border-radius-sm);
+    }
+  }
+
   &__title-row {
     display: flex;
     align-items: flex-start;
@@ -171,28 +187,6 @@
     &:focus {
       outline: 2px solid var(--color-primary);
       outline-offset: 2px;
-    }
-  }
-}
-
-.payment-card-link {
-  text-decoration: none;
-  color: inherit;
-  display: flex;
-  height: 100%;
-  padding: 10px 0;
-  
-  &:hover {
-    text-decoration: none;
-  }
-  
-  .payment-card {
-    cursor: pointer;
-    width: 100%;
-    
-    &:hover {
-      box-shadow: var(--shadow-lg);
-      transform: translateY(-4px);
     }
   }
 }
