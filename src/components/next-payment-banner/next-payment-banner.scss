@@ -128,6 +128,42 @@
       // Optional: show only icon on very small screens
     }
   }
+
+  &__changes {
+    position: relative;
+    z-index: 1;
+    margin-top: var(--spacing-md);
+    padding-top: var(--spacing-sm);
+    border-top: 1px solid rgba(255, 255, 255, 0.35);
+  }
+
+  &__changes-title {
+    margin: 0 0 var(--spacing-xs);
+    font-size: var(--font-size-small);
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    opacity: 0.95;
+  }
+
+  &__changes-list {
+    margin: 0;
+    padding-left: 1.1rem;
+    display: grid;
+    gap: 0.25rem;
+  }
+
+  &__changes-item {
+    font-size: var(--font-size-small);
+    line-height: 1.45;
+    opacity: 0.95;
+  }
+
+  &__changes-empty {
+    margin: 0;
+    font-size: var(--font-size-small);
+    opacity: 0.85;
+  }
 }
 
 @keyframes pulse {

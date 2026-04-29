@@ -4,6 +4,9 @@ import {
   getEligiblePayments,
   getPayoutDatesForPaymentInMonth,
   getUpcomingSeoMonthLinks,
+  getMonthlyShiftChanges,
+  getMonthPayoutSummary,
+  getMonthComparison,
 } from '../payments';
 import { Payment } from '@/types/payment';
 
@@ -156,6 +159,96 @@ describe('Payment Utilities', () => {
       expect(firstDay.getTime()).toBeGreaterThanOrEqual(
         new Date(cutoff.getFullYear(), cutoff.getMonth(), 1).getTime()
       );
+    });
+  });
+
+  describe('getMonthlyShiftChanges', () => {
+    test('returns shifted payout when schedule day falls on weekend', () => {
+      const p: Payment = {
+        ...mockPayment,
+        id: 'shifted',
+        name: 'Shifted Benefit',
+        next_payment: '',
+        schedule: '15. dnia każdego miesiąca',
+      };
+
+      const changes = getMonthlyShiftChanges([p], 2025, 11);
+      expect(changes).toEqual([
+        {
+          paymentId: 'shifted',
+          paymentName: 'Shifted Benefit',
+          nominalISO: '2025-11-15',
+          effectiveISO: '2025-11-14',
+        },
+      ]);
+    });
+
+    test('returns empty list when nominal and effective dates are equal', () => {
+      const p: Payment = {
+        ...mockPayment,
+        id: 'stable',
+        next_payment: '',
+        schedule: '10. dnia każdego miesiąca',
+      };
+
+      const changes = getMonthlyShiftChanges([p], 2025, 11);
+      expect(changes).toEqual([]);
+    });
+  });
+
+  describe('getMonthPayoutSummary', () => {
+    test('counts total payouts and active benefits for a month', () => {
+      const p1: Payment = {
+        ...mockPayment,
+        id: 'p1',
+        next_payment: '',
+        schedule: '10. dnia miesiąca',
+      };
+      const p2: Payment = {
+        ...mockPayment,
+        id: 'p2',
+        next_payment: '',
+        schedule: '2., 4. dnia miesiąca',
+      };
+      const p3: Payment = {
+        ...mockPayment,
+        id: 'p3',
+        excludeFromNext: true,
+        next_payment: '2026-09-30',
+      };
+
+      const summary = getMonthPayoutSummary([p1, p2, p3], 2026, 9);
+      expect(summary).toEqual({ totalPayouts: 4, activeBenefits: 3 });
+    });
+  });
+
+  describe('getMonthComparison', () => {
+    test('returns benefits with date differences between current and next month', () => {
+      const shifted: Payment = {
+        ...mockPayment,
+        id: 'shifted-monthly',
+        name: 'Shifted Monthly',
+        next_payment: '',
+        schedule: '15. dnia miesiąca',
+      };
+      const stable: Payment = {
+        ...mockPayment,
+        id: 'stable-monthly',
+        name: 'Stable Monthly',
+        next_payment: '',
+        schedule: '12. dnia miesiąca',
+      };
+
+      const changes = getMonthComparison(
+        [shifted, stable],
+        { year: 2025, month: 11 },
+        { year: 2025, month: 12 }
+      );
+
+      expect(changes.length).toBe(1);
+      expect(changes[0].paymentId).toBe('shifted-monthly');
+      expect(changes[0].leftDates).toEqual(['2025-11-14']);
+      expect(changes[0].rightDates).toEqual(['2025-12-15']);
     });
   });
 });

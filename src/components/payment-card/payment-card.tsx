@@ -9,9 +9,17 @@ interface PaymentCardProps {
   payment: Payment;
   showNextPayment?: boolean;
   linkToDetail?: boolean;
+  isFavorite?: boolean;
+  onToggleFavorite?: (paymentId: string) => void;
 }
 
-export default function PaymentCard({ payment, showNextPayment = true, linkToDetail = true }: PaymentCardProps) {
+export default function PaymentCard({
+  payment,
+  showNextPayment = true,
+  linkToDetail = true,
+  isFavorite = false,
+  onToggleFavorite,
+}: PaymentCardProps) {
   // For excluded payments, use original date without calculation
   const effectiveISO = payment.excludeFromNext 
     ? payment.next_payment 
@@ -33,7 +41,24 @@ export default function PaymentCard({ payment, showNextPayment = true, linkToDet
   const cardContent = (
     <div className={`payment-card ${isUpcoming ? 'payment-card--upcoming' : ''} ${isPast ? 'payment-card--past' : ''}`}>
       <div className="payment-card__header">
-        <h3 className="payment-card__title">{payment.name}</h3>
+        <div className="payment-card__title-row">
+          <h3 className="payment-card__title">{payment.name}</h3>
+          {onToggleFavorite && (
+            <button
+              type="button"
+              className={`payment-card__favorite ${isFavorite ? 'payment-card__favorite--active' : ''}`}
+              onClick={(e) => {
+                e.stopPropagation();
+                e.preventDefault();
+                onToggleFavorite(payment.id);
+              }}
+              aria-label={isFavorite ? 'Usuń z ulubionych' : 'Dodaj do ulubionych'}
+              title={isFavorite ? 'Usuń z ulubionych' : 'Dodaj do ulubionych'}
+            >
+              ★
+            </button>
+          )}
+        </div>
         {showNextPayment && payment.next_payment !== "" && (
           <div className="payment-card__date">
             <span className="payment-card__date-label">
