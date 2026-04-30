@@ -30,6 +30,7 @@ function getPaymentsForDate(
 export default function CalendarGrid({ year, month, paymentsByDate, monthName }: CalendarGridProps) {
   const [selectedDateKey, setSelectedDateKey] = useState<string | null>(null);
   const gridRef = useRef<HTMLDivElement>(null);
+  const monthKey = `${year}-${month}`;
 
   const first = new Date(year, month, 1);
   const last = new Date(year, month + 1, 0);
@@ -82,9 +83,14 @@ export default function CalendarGrid({ year, month, paymentsByDate, monthName }:
           </div>
         ))}
       </div>
-      <div className="calendar-grid__body">
+      <div key={monthKey} className="calendar-grid__body calendar-grid__body--animating">
         {Array.from({ length: rows }, (_, rowIndex) => (
-          <div key={rowIndex} className="calendar-grid__row" role="row">
+          <div
+            key={rowIndex}
+            className="calendar-grid__row"
+            role="row"
+            style={{ animationDelay: `${rowIndex * 0.05}s` }}
+          >
             {cells.slice(rowIndex * 7, rowIndex * 7 + 7).map((day, colIndex) => {
               if (day === null) {
                 return <div key={`e-${rowIndex}-${colIndex}`} className="calendar-grid__cell calendar-grid__cell--empty" />;

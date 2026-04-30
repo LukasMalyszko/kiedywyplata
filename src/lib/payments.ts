@@ -292,11 +292,7 @@ export interface PaymentMonthComparison {
   rightDates: string[];
 }
 
-/**
- * Payouts in the selected month that shift to a different working day.
- * Excludes one-time/yearly benefits (`excludeFromNext`), which intentionally
- * use raw snapshot/`next_payment` dates in payout views without working-day adjustment.
- */
+/** Payouts in the selected month that shift to a different working day. */
 export function getMonthlyShiftChanges(
   payments: Payment[],
   year: number,
@@ -325,8 +321,6 @@ export function getMonthlyShiftChanges(
   };
 
   for (const payment of payments) {
-    if (payment.excludeFromNext) continue;
-
     const scheduleDays = parseNumbers(payment.schedule || '');
     if (scheduleDays.length > 0) {
       for (const day of scheduleDays) {
