@@ -32,6 +32,12 @@
   gap: var(--spacing-xs);
 }
 
+.calendar-grid__body--animating {
+  .calendar-grid__row {
+    animation: calendarRowFadeSlide 0.45s cubic-bezier(0.33, 0.66, 0.66, 1) both;
+  }
+}
+
 .calendar-grid__row {
   display: grid;
   grid-template-columns: repeat(7, 1fr);
@@ -294,5 +300,16 @@
   .calendar-grid__tooltip {
     min-width: 200px;
     max-width: 260px;
+  }
+}
+
+@keyframes calendarRowFadeSlide {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
   }
 }
