@@ -1,11 +1,11 @@
 .header {
-  background: var(--color-background-elevated);
+  background: var(--header-background);
   border-bottom: 1px solid var(--color-border);
   box-shadow: var(--shadow-sm);
   position: sticky;
   top: 0;
   z-index: 100;
-  backdrop-filter: blur(10px);
+  backdrop-filter: blur(var(--header-backdrop-blur));
 }
 
 .header__content {
@@ -41,13 +41,8 @@
 
   img {
     display: block;
-    filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.12));
+    filter: var(--logo-image-filter);
   }
-}
-
-// Black PNG reads as white on dark header (same visual role as on light)
-[data-theme="dark"] .header__logo-icon img {
-  filter: invert(1) brightness(1.08) drop-shadow(0 1px 2px rgba(0, 0, 0, 0.4));
 }
 
 .header__logo-text {
@@ -145,15 +140,4 @@
   .header__logo {
     font-size: var(--font-size-base);
   }
-}
-
-// Theme-specific enhancements
-[data-theme="dark"] .header {
-  background: rgba(15, 23, 42, 0.95);
-  backdrop-filter: blur(20px);
-}
-
-[data-theme="light"] .header {
-  background: rgba(255, 255, 255, 0.95);
-  backdrop-filter: blur(20px);
 }
