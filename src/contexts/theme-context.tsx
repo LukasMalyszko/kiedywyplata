@@ -2,7 +2,49 @@
 
 import React, { createContext, useContext, useEffect, useState } from 'react';
 
-type Theme = 'light' | 'dark';
+export type Theme = 'light' | 'dark' | 'paper-planner' | 'high-contrast' | 'minimal-data';
+
+export const THEME_PACKS: Array<{
+  id: Theme;
+  label: string;
+  shortLabel: string;
+  description: string;
+}> = [
+  {
+    id: 'light',
+    label: 'Tryb jasny',
+    shortLabel: 'Jasny',
+    description: 'Klasyczny jasny wygląd z lekkimi akcentami.',
+  },
+  {
+    id: 'dark',
+    label: 'Tryb ciemny',
+    shortLabel: 'Ciemny',
+    description: 'Wieczorny wariant z ciemnym tłem i chłodnymi akcentami.',
+  },
+  {
+    id: 'paper-planner',
+    label: 'Papierowy planer',
+    shortLabel: 'Planner',
+    description: 'Ciepły papier, delikatne kontrasty i notatnikowy charakter.',
+  },
+  {
+    id: 'high-contrast',
+    label: 'Wysoki kontrast',
+    shortLabel: 'Kontrast',
+    description: 'Mocne rozróżnienie treści z bardzo czytelnymi stanami focus.',
+  },
+  {
+    id: 'minimal-data',
+    label: 'Minimalna ilość danych',
+    shortLabel: 'Data',
+    description: 'Zwarty, analityczny widok z ograniczoną paletą kolorów.',
+  },
+];
+
+function isTheme(value: string | null): value is Theme {
+  return THEME_PACKS.some((pack) => pack.id === value);
+}
 
 interface ThemeContextType {
   theme: Theme;
@@ -29,8 +71,8 @@ export function ThemeProvider({ children }: ThemeProviderProps) {
   // Load saved theme after component mounts (client-side only)
   useEffect(() => {
     if (mounted) {
-      const savedTheme = localStorage.getItem('kiedywyplata-theme') as Theme;
-      if (savedTheme && (savedTheme === 'light' || savedTheme === 'dark')) {
+      const savedTheme = localStorage.getItem('kiedywyplata-theme');
+      if (isTheme(savedTheme)) {
         // eslint-disable-next-line react-hooks/set-state-in-effect
         setThemeState(savedTheme);
       }
@@ -46,7 +88,11 @@ export function ThemeProvider({ children }: ThemeProviderProps) {
   }, [theme, mounted]);
 
   const toggleTheme = () => {
-    setThemeState(prev => prev === 'light' ? 'dark' : 'light');
+    setThemeState((prev) => {
+      const currentIndex = THEME_PACKS.findIndex((pack) => pack.id === prev);
+      const nextIndex = (currentIndex + 1) % THEME_PACKS.length;
+      return THEME_PACKS[nextIndex].id;
+    });
   };
 
   const setTheme = (newTheme: Theme) => {

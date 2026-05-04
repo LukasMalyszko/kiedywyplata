@@ -321,6 +321,8 @@ export function getMonthlyShiftChanges(
   };
 
   for (const payment of payments) {
+    if (payment.excludeFromNext) continue;
+
     const scheduleDays = parseNumbers(payment.schedule || '');
     if (scheduleDays.length > 0) {
       for (const day of scheduleDays) {
