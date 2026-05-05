@@ -3,6 +3,7 @@ import {
   daysUntil,
   getEligiblePayments,
   getPayoutDatesForPaymentInMonth,
+  getPaymentsByDateInMonth,
   getUpcomingSeoMonthLinks,
   getMonthlyShiftChanges,
   getMonthPayoutSummary,
@@ -141,6 +142,34 @@ describe('Payment Utilities', () => {
       };
       expect(getPayoutDatesForPaymentInMonth(p, 2026, 9)).toEqual(['2026-09-30']);
       expect(getPayoutDatesForPaymentInMonth(p, 2026, 8)).toEqual([]);
+    });
+  });
+
+  describe('getPaymentsByDateInMonth', () => {
+    test('includes excludeFromNext entries when they have payout date in selected month', () => {
+      const monthly: Payment = {
+        ...mockPayment,
+        id: 'monthly-benefit',
+        name: 'Monthly Benefit',
+        next_payment: '',
+        schedule: '10. dnia miesiąca',
+      };
+
+      const yearly: Payment = {
+        ...mockPayment,
+        id: 'yearly-benefit',
+        name: 'Yearly Benefit',
+        excludeFromNext: true,
+        next_payment: '',
+        schedule: 'do końca września każdego roku',
+        yearly_snapshots: {
+          '2026': { school_year: '2026/2027', next_payment: '2026-09-30' },
+        },
+      };
+
+      const map = getPaymentsByDateInMonth([monthly, yearly], 2026, 8);
+      expect(map['2026-09-10']?.some((p) => p.id === 'monthly-benefit')).toBe(true);
+      expect(map['2026-09-30']?.some((p) => p.id === 'yearly-benefit')).toBe(true);
     });
   });
 
