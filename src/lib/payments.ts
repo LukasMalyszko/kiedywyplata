@@ -248,26 +248,11 @@ export function getPaymentsByDateInMonth(
   month: number
 ): Record<string, Payment[]> {
   const result: Record<string, Payment[]> = {};
-  const monthEnd = new Date(year, month + 1, 0);
-  const maxIterationsPerPayment = 31;
-  for (const p of getEligiblePayments(payments)) {
-    let ref = new Date(year, month, 1);
-    let iterations = 0;
-    while (ref <= monthEnd && iterations < maxIterationsPerPayment) {
-      iterations++;
-      try {
-        const nextDateStr = getEffectiveNextPayment(p, ref);
-        if (!/^\d{4}-\d{2}-\d{2}$/.test(nextDateStr)) break;
-        const [y, m, d] = nextDateStr.split('-').map(Number);
-        const next = new Date(y, m - 1, d);
-        if (Number.isNaN(next.getTime())) break;
-        if (next.getFullYear() !== year || next.getMonth() !== month) break;
-        if (!result[nextDateStr]) result[nextDateStr] = [];
-        result[nextDateStr].push(p);
-        ref = new Date(next.getTime() + 24 * 60 * 60 * 1000);
-      } catch {
-        break;
-      }
+  for (const p of payments) {
+    const payoutDates = getPayoutDatesForPaymentInMonth(p, year, month + 1);
+    for (const dateISO of payoutDates) {
+      if (!result[dateISO]) result[dateISO] = [];
+      result[dateISO].push(p);
     }
   }
   return result;
