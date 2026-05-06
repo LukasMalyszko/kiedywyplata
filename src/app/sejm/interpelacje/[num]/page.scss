@@ -1,0 +1,147 @@
+.interpellation-page {
+  padding: var(--spacing-lg) 0 var(--spacing-xxl);
+
+  &__header {
+    margin-bottom: var(--spacing-lg);
+  }
+
+  &__back-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.3rem;
+    color: var(--color-primary);
+    text-decoration: none;
+    font-size: var(--font-size-small);
+
+    &:hover {
+      text-decoration: underline;
+    }
+  }
+
+  &__num {
+    margin: 0.5rem 0 0.2rem;
+    font-size: var(--font-size-small);
+    color: var(--color-text-light);
+    font-weight: 400;
+  }
+
+  &__title {
+    margin: 0 0 0.5rem;
+    font-size: var(--font-size-xxl);
+    color: var(--color-text);
+    line-height: 1.3;
+  }
+
+  &__meta {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem 1.5rem;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    color: var(--color-text-light);
+    font-size: var(--font-size-small);
+  }
+
+  &__meta-item {
+    display: flex;
+    gap: 0.3rem;
+
+    strong {
+      color: var(--color-text);
+    }
+  }
+
+  &__section-title {
+    font-size: var(--font-size-large);
+    color: var(--color-text);
+    margin: 0 0 0.75rem;
+  }
+
+  &__body-card,
+  &__recipients-card,
+  &__replies-card {
+    background: var(--color-surface);
+    border: 1px solid var(--color-border);
+    border-radius: var(--border-radius-lg);
+    padding: var(--spacing-lg);
+    margin-bottom: var(--spacing-lg);
+  }
+
+  &__body-text {
+    white-space: pre-wrap;
+    font-size: var(--font-size-small);
+    color: var(--color-text);
+    line-height: 1.7;
+    margin: 0;
+  }
+
+  &__body-loading {
+    color: var(--color-text-light);
+    font-size: var(--font-size-small);
+  }
+
+  &__recipient-list,
+  &__reply-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: grid;
+    gap: 0.6rem;
+  }
+
+  &__recipient-item,
+  &__reply-item {
+    border: 1px solid var(--color-border);
+    border-radius: var(--border-radius-md);
+    padding: 0.75rem 1rem;
+    background: var(--color-background);
+  }
+
+  &__recipient-name,
+  &__reply-from {
+    margin: 0 0 0.2rem;
+    font-weight: 600;
+    color: var(--color-text);
+    font-size: var(--font-size-small);
+  }
+
+  &__recipient-meta,
+  &__reply-meta {
+    margin: 0;
+    color: var(--color-text-light);
+    font-size: 12px;
+  }
+
+  &__links {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+
+    a {
+      border: 1px solid var(--color-border);
+      border-radius: 8px;
+      padding: 0.35rem 0.75rem;
+      font-size: var(--font-size-small);
+      background: var(--color-background);
+      color: var(--color-primary);
+      text-decoration: none;
+
+      &:hover {
+        text-decoration: underline;
+      }
+    }
+  }
+
+  &__error {
+    padding: var(--spacing-xl) 0;
+    text-align: center;
+    color: var(--color-text-light);
+  }
+
+  &__error-title {
+    font-size: var(--font-size-xl);
+    color: var(--color-text);
+    margin: 0 0 0.5rem;
+  }
+}
