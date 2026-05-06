@@ -1,3 +1,4 @@
+import Link from 'next/link';
 import './footer.scss';
 
 const Footer = () => {
@@ -11,6 +12,13 @@ const Footer = () => {
             Polsce
           </p>
           <div className="footer__links">
+            <Link
+              href="/sejm/interpelacje"
+              className="footer__link"
+              title="Interpelacje Sejmu RP o emeryturach"
+            >
+              Interpelacje o emeryturach
+            </Link>
             <a
               href="https://www.katalogseo.net.pl"
               title="Katalog SEO"

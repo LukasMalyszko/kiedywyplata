@@ -1,0 +1,122 @@
+.gov-dataset-page {
+  padding: var(--spacing-lg) 0 var(--spacing-xxl);
+
+  &__header {
+    margin-bottom: var(--spacing-lg);
+  }
+
+  &__back-link {
+    color: var(--color-primary);
+    text-decoration: none;
+    font-size: var(--font-size-small);
+
+    &:hover {
+      text-decoration: underline;
+    }
+  }
+
+  &__title {
+    margin: 0.4rem 0 0.2rem;
+    font-size: var(--font-size-xxl);
+    color: var(--color-text);
+  }
+
+  &__subtitle {
+    margin: 0;
+    color: var(--color-text-light);
+    font-size: var(--font-size-small);
+    word-break: break-all;
+  }
+
+  &__state {
+    color: var(--color-text-light);
+    margin: 0;
+  }
+
+  &__resources {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: grid;
+    gap: 0.75rem;
+  }
+
+  &__resource-item {
+    border: 1px solid var(--color-border);
+    border-radius: var(--border-radius-md);
+    padding: 0.8rem;
+    display: flex;
+    justify-content: space-between;
+    gap: 1rem;
+    align-items: center;
+    background: var(--color-surface);
+  }
+
+  &__resource-title {
+    margin: 0;
+    color: var(--color-text);
+    font-weight: 600;
+  }
+
+  &__resource-meta {
+    margin: 0.15rem 0 0;
+    color: var(--color-text-light);
+    font-size: var(--font-size-small);
+  }
+
+  &__actions {
+    display: flex;
+    gap: 0.5rem;
+    flex-wrap: wrap;
+  }
+
+  &__action-link,
+  &__preview-btn {
+    border: 1px solid var(--color-border);
+    border-radius: 8px;
+    padding: 0.35rem 0.6rem;
+    font-size: var(--font-size-small);
+    background: var(--color-background);
+    color: var(--color-primary);
+    text-decoration: none;
+    cursor: pointer;
+  }
+
+  &__preview-btn:hover,
+  &__action-link:hover {
+    text-decoration: underline;
+  }
+
+  &__preview-block {
+    margin-top: 1rem;
+    border: 1px solid var(--color-border);
+    border-radius: var(--border-radius-md);
+    padding: 0.8rem;
+    background: var(--color-surface);
+  }
+
+  &__preview-title {
+    margin: 0 0 0.5rem;
+    font-size: var(--font-size-large);
+    color: var(--color-text);
+  }
+
+  &__preview {
+    margin: 0;
+    padding: 0.7rem;
+    border: 1px solid var(--color-border);
+    border-radius: 8px;
+    overflow-x: auto;
+    max-height: 360px;
+    font-size: 0.78rem;
+    background: var(--color-background);
+    color: var(--color-text-secondary);
+  }
+
+  @media (max-width: 768px) {
+    &__resource-item {
+      flex-direction: column;
+      align-items: flex-start;
+    }
+  }
+}
