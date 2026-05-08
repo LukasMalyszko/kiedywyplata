@@ -1,145 +1,143 @@
-# Kiedy Wypłata 🇵🇱
+# Kiedy Wyplata 🇵🇱
 
-Aplikacja webowa do sprawdzania terminów wypłat świadczeń społecznych w Polsce.
+A web application for checking payment dates of social benefits in Poland.
 
-## 🎯 Funkcje
+## Features
 
-- **Terminy wypłat**: Aktualne daty wypłat 800+, emerytur ZUS, zasiłków i innych świadczeń
-- **Przejrzyste URL-e**: Kategorie dostępne pod krótkimi adresami (`/family`, `/pension`)
-- **Strony szczegółowe**: Każde świadczenie ma dedykowaną stronę (`/benefit/800plus`)
-- **Kategoryzacja**: Podział na kategorie (rodzinne, emerytury, zasiłki, socjalne)
-- **Responsywność**: Pełne wsparcie dla urządzeń mobilnych
-- **SEO**: Zoptymalizowane meta tagi i struktura dla wyszukiwarek
-- **AdSense**: Gotowa integracja z Google AdSense
-- **Statyczne generowanie**: Szybkie ładowanie dzięki SSG w Next.js
+- **Payment schedules**: Current payout dates for 800+, ZUS pensions, benefits, and other programs
+- **Clean URLs**: Categories available under short paths (`/family`, `/pension`)
+- **Detail pages**: Each benefit has its own dedicated page (`/benefit/800plus`)
+- **Categorization**: Benefits grouped into categories (family, pensions, allowances, social)
+- **Responsive design**: Full support for mobile devices
+- **SEO**: Optimized meta tags and structure for search engines
+- **AdSense**: Ready-to-use Google AdSense integration
+- **Static generation**: Fast loading with Next.js SSG
 
+## URL Structure
 
-## �️ Struktura URL
+### Categories (short URLs)
+- `/family` - Family benefits (800+, family allowance)
+- `/pension` - Pensions and annuities (ZUS, KRUS, 13th/14th pension)
+- `/benefits` - Allowances (sickness, maternity)
+- `/social` - Social benefits (coal allowance, etc.)
 
-### **Kategorie** (krótkie URL-e)
-- `/family` - Świadczenia rodzinne (800+, zasiłki rodzinne)
-- `/pension` - Emerytury i renty (ZUS, KRUS, 13/14 emerytura)
-- `/benefits` - Zasiłki (chorobowe, macierzyńskie)
-- `/social` - Świadczenia socjalne (dodatek węglowy, etc.)
+### Benefit details
+- `/benefit/800plus` - 800+ benefit details
+- `/benefit/emerytura` - ZUS pension details
+- `/benefit/zasilek-chorobowy` - Sickness allowance details
+- etc.
 
-### **Szczegóły świadczeń**
-- `/benefit/800plus` - Szczegóły świadczenia 800+
-- `/benefit/emerytura` - Szczegóły emerytury ZUS
-- `/benefit/zasilek-chorobowy` - Szczegóły zasiłku chorobowego
-- itd.
-
-## �📁 Struktura projektu
+## Project Structure
 
 ```
 ├── data/
-│   └── payments.json          # Dane o wypłatach
+│   └── payments.json          # Payment data
 ├── src/
 │   ├── app/
-│   │   ├── [category]/        # 🆕 Kategorie: /family, /pension, etc.
+│   │   ├── [category]/        # Categories: /family, /pension, etc.
 │   │   │   ├── page.tsx
 │   │   │   └── page.scss
-│   │   ├── benefit/[benefit]/ # 🆕 Szczegóły: /benefit/800plus
+│   │   ├── benefit/[benefit]/ # Details: /benefit/800plus
 │   │   │   ├── page.tsx
 │   │   │   └── page.scss
-│   │   ├── globals.scss       # Globalne style SCSS
-│   │   ├── layout.tsx         # Layout aplikacji
-│   │   └── page.tsx           # Strona główna
+│   │   ├── globals.scss       # Global SCSS styles
+│   │   ├── layout.tsx         # Application layout
+│   │   └── page.tsx           # Homepage
 │   ├── components/
-│   │   ├── payment-card/      # Karta wypłaty (BEM) z linkami
-│   │   ├── next-payment-banner/ # Banner najbliższej wypłaty
-│   │   ├── category-grid/     # Siatka kategorii
-│   │   └── adsense/          # Komponenty AdSense
+│   │   ├── payment-card/      # Payment card (BEM) with links
+│   │   ├── next-payment-banner/ # Upcoming payment banner
+│   │   ├── category-grid/     # Category grid
+│   │   └── adsense/           # AdSense components
 │   └── types/
-│       └── payment.ts         # Typy TypeScript
+│       └── payment.ts         # TypeScript types
 └── public/
-    └── adsense.html          # Przykład integracji AdSense
+    └── adsense.html           # AdSense integration example
 ```
 
-## 🚀 Uruchomienie
+## Getting Started
 
-### Wymagania
-- Node.js 18+ 
+### Requirements
+- Node.js 18+
 - npm/yarn/pnpm
 
-### Instalacja
+### Installation
 
 ```bash
-# Zainstaluj zależności
+# Install dependencies
 npm install
 
-# Uruchom serwer deweloperski
+# Start development server
 npm run dev
 ```
 
-Aplikacja będzie dostępna pod adresem: http://localhost:3000
+The app will be available at: http://localhost:3000
 
-### Budowanie produkcyjne
+### Production Build
 
 ```bash
-# Zbuduj aplikację
+# Build the app
 npm run build
 
-# Uruchom wersję produkcyjną
+# Start production server
 npm start
 ```
 
-## 🎨 Stylowanie z BEM
+## BEM Styling
 
-Projekt używa metodologii BEM dla CSS:
+The project uses the BEM methodology for CSS:
 
 ```scss
-// Blok
+// Block
 .payment-card { }
 
 // Element
 .payment-card__title { }
 .payment-card__description { }
 
-// Modyfikator
+// Modifier
 .payment-card--upcoming { }
 .payment-card--past { }
 ```
 
+## Deployment
 
-## 🚀 Wdrożenie
+### Automatic deployment with Vercel
 
-### Automatyczne wdrożenie z Vercel
+1. **Connect to GitHub**: Push your code to a GitHub repository
+2. **Connect to Vercel**: Go to [vercel.com](https://vercel.com) -> "New Project" -> import your repo
+3. **Configure variables**: Add environment variables in the Vercel dashboard
+4. **Done!**: Vercel will deploy automatically on every push to `main`
 
-1. **Połącz z GitHub**: Wypchnij kod do repozytorium GitHub
-2. **Połącz z Vercel**: Przejdź na [vercel.com](https://vercel.com) → "New Project" → importuj repo
-3. **Skonfiguruj zmienne**: Dodaj zmienne środowiskowe w dashboardzie Vercel
-4. **Gotowe!**: Vercel automatycznie wdroży przy każdym push do `main`
-
-### Ręczne wdrożenie
+### Manual deployment
 
 ```bash
-# Zainstaluj Vercel CLI
+# Install Vercel CLI
 npm i -g vercel
 
-# Zaloguj się
+# Log in
 vercel login
 
-# Wdróż na preview
+# Deploy preview
 vercel
 
-# Wdróż na produkcję
+# Deploy production
 vercel --prod
 ```
 
 ### CI/CD Pipeline
 
-Projekt zawiera:
-- **GitHub Actions**: Automatyczne testy i buildy
-- **Vercel Integration**: Auto-deploy z GitHub
-- **Preview Deployments**: Dla pull requestów
-- **Production Deploys**: Z brancha `main`
+The project includes:
+- **GitHub Actions**: Automated tests and builds
+- **Vercel Integration**: Auto-deploy from GitHub
+- **Preview Deployments**: For pull requests
+- **Production Deploys**: From the `main` branch
 
-Szczegółowe instrukcje: [`DEPLOYMENT.md`](./DEPLOYMENT.md)
+Detailed instructions: [`DEPLOYMENT.md`](./DEPLOYMENT.md)
 
-## 📄 Licencja
+## License
 
-MIT License - możesz swobodnie wykorzystywać w projektach komercyjnych.
+MIT License - free to use in commercial projects.
 
 ---
 
-**Kiedy Wypłata** - Zawsze na bieżąco z terminami wypłat w Polsce! 🇵🇱
+**Kiedy Wyplata** - Always up to date with benefit payment schedules in Poland. 🇵🇱
